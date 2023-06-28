@@ -20,13 +20,13 @@
         <footer class="bg-gray-200 py-4 mt-8 absolute bottom-0 w-full">
             <div class="flex justify-center items-center space-x-4">
                 <a href="https://github.com/daiv05" target="_blank" rel="noopener" class="mr-4">
-                    <img src="assets/img/github.svg" alt="GitHub" class="h-6 w-6">
+                    <img src="../assets/img/github.svg" alt="GitHub" class="h-6 w-6">
                 </a>
                 <a href="https://twitter.com/daiv_09" target="_blank" rel="noopener" class="mr-4">
-                    <img src="assets/img/twitter.svg" alt="Twitter" class="h-6 w-6">
+                    <img src="../assets/img/twitter.svg" alt="Twitter" class="h-6 w-6">
                 </a>
                 <a href="mailto:davidderas50@gmail.com" target="_blank" rel="noopener" class="mr-4">
-                    <img src="assets/img/brand-gmail.svg" alt="Gmail" class="h-6 w-6">
+                    <img src="../assets/img/brand-gmail.svg" alt="Gmail" class="h-6 w-6">
                 </a>
             </div>
             <div class="text-center mt-2">
