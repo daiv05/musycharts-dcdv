@@ -15,5 +15,5 @@ export default defineConfig({
     }
   },
   publicDir: 'public',
-  base: '/spotycharts-dcdv',
+  base: '/spotycharts-dcdv/',
 })
