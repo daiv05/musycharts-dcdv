@@ -4,7 +4,7 @@ import charts from '../views/charts.vue'
 import topGenres from '../views/top-genres.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
