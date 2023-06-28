@@ -9,17 +9,17 @@
             </div>
         </div>
         <!-- Lista artistas -->
-        <div v-if="artist_info != null" class="md:w-1/2 md:ml-4 mt-4 md:mt-0">
+        <div v-if="artist_info != null" class="md:w-1/2 md:ml-4 mt-4 md:mt-0 pl-8">
             <div class="md:flex md:flex-wrap">
                 <div v-for="(artist, index) in artist_info" :key="artist.name" class="md:w-1/2">
-                    <div class="w-full" v-if="index < artist_info.length - 10">
+                    <div class="w-full" v-if="index < artist_info.length/2">
                         <img :src="artist.images[0].url" :alt="artist.name"
                             :style="{ width: `${100 - index * 10}px`, height: `${100 - index * 10}px` }"
-                            class="hidden md:block">
-                        <span class="text-sm md:text-base">{{ artist.name }}</span>
+                            class="md:block">
+                        <span class="text-sm md:text-base">{{ (index + 1) + '. ' + artist.name }}</span>
                     </div>
                     <div class="w-full" v-else>
-                        <span class="text-sm md:text-base">{{ artist.name }}</span>
+                        <span class="text-sm md:text-base">{{ (index + 1) + '. ' + artist.name }}</span>
                     </div>
                 </div>
             </div>
@@ -37,6 +37,7 @@ import axios from 'axios';
 import config from '@/config';
 
 export default {
+    props: ['time_limit',],
     data() {
         return {
             genreData: null,
@@ -70,6 +71,7 @@ export default {
         },
 
         getTopTracks() {
+            this.genreData = null;
             if (this.accessToken == null || this.accessToken == 'undefined') {
                 this.$router.push({ path: '/' });
                 return;
@@ -77,7 +79,7 @@ export default {
             const headers = {
                 Authorization: 'Bearer ' + this.accessToken
             };
-            return axios.get('https://api.spotify.com/v1/me/top/artists', { headers })
+            return axios.get('https://api.spotify.com/v1/me/top/artists?time_range=' + this.time_limit, { headers })
                 .then(response => {
                     const topArtists = response.data.items;
                     this.artist_info = topArtists;
