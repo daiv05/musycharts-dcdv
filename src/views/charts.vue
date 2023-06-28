@@ -18,7 +18,7 @@
             <!-- Grafico de pastel -->
             <div
                 class="transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 max-w-sm mx-2 md:mx-4 mb-4 rounded overflow-hidden shadow-lg">
-                <img class="w-full h-40 md:h-64 object-cover" src="../assets/img/pastel-img.png"
+                <img class="w-full h-40 md:h-64 object-cover" src="assets/img/pastel-img.png"
                     alt="Sunset in the mountains">
                 <div class="px-4 py-2">
                     <div class="font-bold text-lg md:text-xl mb-2">Spotypie</div>
@@ -54,7 +54,7 @@
             <!-- Grafico de burbujas -->
             <div
                 class="transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 max-w-sm mx-2 md:mx-4 mb-4 rounded overflow-hidden shadow-lg">
-                <img class="w-full h-40 md:h-64 object-cover" src="../assets/img/bubble-img.png"
+                <img class="w-full h-40 md:h-64 object-cover" src="assets/img/bubble-img.png"
                     alt="Sunset in the mountains">
                 <div class="px-4 py-2">
                     <div class="font-bold text-lg md:text-xl mb-2">Spotibubble</div>
