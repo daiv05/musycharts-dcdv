@@ -2,7 +2,7 @@
     <div class="flex flex-col items-center justify-center h-screen">
         <div class="flex flex-col md:flex-row justify-center pb-8">
             <div class="flex justify-center border-gray-800 border-4 mb-4 md:mb-0">
-                <img src="assets/img/spotylogo22.png" alt="logo" class="w-auto h-auto max-w-full max-h-[40vh]">
+                <img src="../assets/img/spotylogo22.png" alt="logo" class="w-auto h-auto max-w-full max-h-[40vh]">
             </div>
             <div class="flex flex-col items-center mt-4 md:ml-4 justify-center px-4">
                 <p class="text-xl md:text-2xl text-white mb-2 text-center md:text-left">Tus gustos musicales como nunca los
