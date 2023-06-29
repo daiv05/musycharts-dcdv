@@ -12,10 +12,9 @@
         <div v-if="artist_info != null" class="md:w-1/2 md:ml-4 mt-4 md:mt-0 pl-8">
             <div class="md:flex md:flex-wrap">
                 <div v-for="(artist, index) in artist_info" :key="artist.name" class="md:w-1/2">
-                    <div class="w-full" v-if="index < artist_info.length/2">
+                    <div class="w-full" v-if="index < artist_info.length / 2">
                         <img :src="artist.images[0].url" :alt="artist.name"
-                            :style="{ width: `${100 - index * 10}px`, height: `${100 - index * 10}px` }"
-                            class="md:block">
+                            :style="{ width: `${100 - index * 10}px`, height: `${100 - index * 10}px` }" class="md:block">
                         <span class="text-sm md:text-base">{{ (index + 1) + '. ' + artist.name }}</span>
                     </div>
                     <div class="w-full" v-else>
@@ -87,13 +86,15 @@ export default {
                     console.log(topArtists);
                 })
                 .catch(error => {
-                    if (error.response.data.error.message == 'Invalid authorization code' || error.response.data.error.message == 'The access token expired') {
-                        console.log('autorizacion code invalido');
-                        this.code = null;
-                        this.$router.push({ path: '/' });
-                    } else {
-                        throw new Error('Failed to get artists');
-                    }
+                    this.code = null;
+                    this.$router.push({ path: '/' });
+                    // if (error.response.data.error.message == 'Invalid authorization code' || error.response.data.error.message == 'The access token expired') {
+                    //     console.log('autorizacion code invalido');
+                    //     this.code = null;
+                    //     this.$router.push({ path: '/' });
+                    // } else {
+                    //     throw new Error('Failed to get artists');
+                    // }
                 });
         }
     },

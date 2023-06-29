@@ -27,19 +27,19 @@
                     </p>
                 </div>
                 <div class="px-4 py-2">
-                    <router-link :to="{ name:'top-genres', params: { time_limit: 'short_term'}}"
+                    <router-link :to="{ name: 'top-genres', params: { time_limit: 'short_term' } }"
                         class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                         <span
                             class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">1
                             mes</span>
                     </router-link>
-                    <router-link :to="{ name:'top-genres', params: { time_limit: 'medium_term'}}"
+                    <router-link :to="{ name: 'top-genres', params: { time_limit: 'medium_term' } }"
                         class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                         <span
                             class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">6
                             meses</span>
                     </router-link>
-                    <router-link :to="{ name:'top-genres', params: { time_limit: 'long_term'}}"
+                    <router-link :to="{ name: 'top-genres', params: { time_limit: 'long_term' } }"
                         class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                         <span
                             class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">de
@@ -63,19 +63,19 @@
                     </p>
                 </div>
                 <div class="px-4 py-2">
-                    <router-link :to="{ name:'top-genres', params: { time_limit: 'short_term'}}"
+                    <router-link :to="{ name: 'top-genres', params: { time_limit: 'short_term' } }"
                         class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                         <span
                             class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">1
                             mes</span>
                     </router-link>
-                    <router-link :to="{ name:'top-genres', params: { time_limit: 'medium_term'}}"
+                    <router-link :to="{ name: 'top-genres', params: { time_limit: 'medium_term' } }"
                         class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                         <span
                             class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">6
                             meses</span>
                     </router-link>
-                    <router-link :to="{ name:'top-genres', params: { time_limit: 'long_term'}}"
+                    <router-link :to="{ name: 'top-genres', params: { time_limit: 'long_term' } }"
                         class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                         <span
                             class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">de
@@ -142,13 +142,15 @@ export default {
                     return this.getProfile();
                 })
                 .catch(error => {
-                    if (error.response.data.error.message == 'Invalid authorization code' || error.response.data.error.message == 'The access token expired') {
-                        console.log('autorizacion code invalido');
-                        this.code = null;
+                    // if (error.response.data.error.message == 'Invalid authorization code' || error.response.data.error.message == 'The access token expired') {
+                    //     console.log('autorizacion code invalido');
+                    this.code = null;
+                    if (error) {
                         this.$router.push({ path: '/' });
-                    } else {
-                        throw new Error('Failed to get profile');
                     }
+                    // } else {
+                    //     throw new Error('Failed to get profile');
+                    // }
                 });
         },
 
@@ -162,14 +164,17 @@ export default {
                     this.perfil = response.data;
                 })
                 .catch(error => {
-                    if (error.response.data.error.message == 'The access token expired') {
-                        console.log('el token expiro');
-                        localStorage.removeItem('access_token');
-                        this.accessToken = null;
-                        this.$router.push({ path: '/' });
-                    } else {
-                        throw new Error('Failed to get profile');
-                    }
+                    localStorage.removeItem('access_token');
+                    this.accessToken = null;
+                    this.$router.push({ path: '/' });
+                    // if (error.response.data.error.message == 'The access token expired') {
+                    //     console.log('el token expiro');
+                    //     localStorage.removeItem('access_token');
+                    //     this.accessToken = null;
+                    //     this.$router.push({ path: '/' });
+                    // } else {
+                    //     throw new Error('Failed to get profile');
+                    // }
                 });
         },
     }
