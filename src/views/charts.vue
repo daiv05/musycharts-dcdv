@@ -180,6 +180,11 @@ export default {
                     return response;
                 })
                 .catch(error => {
+                    this.code = null;
+                    localStorage.removeItem('access_token');
+                    console.error('error aqui 2');
+                    console.error(error);
+                    this.$router.push({ path: '/' });
                     return error;
                     // if (error) {
                     //     console.log('error metodo obtener perfil');
