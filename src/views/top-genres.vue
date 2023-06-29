@@ -86,7 +86,10 @@ export default {
                     console.log(topArtists);
                 })
                 .catch(error => {
+                    console.log('error en getTopTracks');
+                    console.log(error);
                     this.code = null;
+                    localStorage.removeItem('access_token'),
                     this.$router.push({ path: '/' });
                     // if (error.response.data.error.message == 'Invalid authorization code' || error.response.data.error.message == 'The access token expired') {
                     //     console.log('autorizacion code invalido');

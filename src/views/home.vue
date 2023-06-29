@@ -44,7 +44,7 @@ const clientId = config.clientId;
 const redirectUri = config.my_url + '/stats';
 let codeVerifier = generateRandomString(128);
 
-async function generateCodeChallenge(codeVerifier) {
+function generateCodeChallenge(codeVerifier) {
     function base64encode(string) {
         return btoa(String.fromCharCode.apply(null, new Uint8Array(string)))
             .replace(/\+/g, '-')
@@ -54,7 +54,7 @@ async function generateCodeChallenge(codeVerifier) {
 
     const encoder = new TextEncoder();
     const data = encoder.encode(codeVerifier);
-    const digest = await window.crypto.subtle.digest('SHA-256', data);
+    const digest = window.crypto.subtle.digest('SHA-256', data);
 
     return base64encode(digest);
 }
@@ -69,7 +69,7 @@ function generateRandomString(length) {
     return text;
 }
 
-async function login() {
+function login() {
     generateCodeChallenge(codeVerifier).then(codeChallenge => {
         let state = generateRandomString(16);
         let scope = 'user-read-private user-read-email user-top-read';

@@ -106,19 +106,29 @@ export default {
         this.code = this.urlParams.get('code');
         if (this.accessToken == null || this.accessToken == 'undefined') {
             this.getToken()
-                .then(() => {
+                .then((res) => {
+                    console.log('token obtenido1');
+                    console.log(res);
                     return this.getProfile();
                 })
                 .catch((error) => {
-                    console.error('Error:', error);
+                    this.code = null;
+                    localStorage.removeItem('access_token');
+                    console.error('error aqui 1');
+                    console.error(error);
                     this.$router.push({ path: '/' });
                 });
         } else {
             this.getProfile()
-                .then(() => {
+                .then((resp) => {
                     console.log('perfil obtenido');
+                    console.log(resp);
                 }).catch((error) => {
-                    console.error('Error:', error);
+                    this.code = null;
+                    localStorage.removeItem('access_token');
+                    console.error('error aqui 2');
+                    console.error(error);
+                    this.$router.push({ path: '/' });
                 });
         }
     },
@@ -145,6 +155,7 @@ export default {
                     // if (error.response.data.error.message == 'Invalid authorization code' || error.response.data.error.message == 'The access token expired') {
                     //     console.log('autorizacion code invalido');
                     this.code = null;
+                    localStorage.removeItem('access_token');
                     if (error) {
                         this.$router.push({ path: '/' });
                     }
@@ -164,9 +175,12 @@ export default {
                     this.perfil = response.data;
                 })
                 .catch(error => {
-                    localStorage.removeItem('access_token');
-                    this.accessToken = null;
-                    this.$router.push({ path: '/' });
+                    if (error) {
+                        console.log('error metodo obtener perfil');
+                        localStorage.removeItem('access_token');
+                        this.accessToken = null;
+                        this.$router.push({ path: '/' });
+                    }
                     // if (error.response.data.error.message == 'The access token expired') {
                     //     console.log('el token expiro');
                     //     localStorage.removeItem('access_token');
