@@ -27,19 +27,19 @@
                     </p>
                 </div>
                 <div class="px-4 py-2">
-                    <router-link :to="{ name: 'top-genres', params: { time_limit: 'short_term' } }"
+                    <router-link :to="{ name: 'top-genres', params: { chart_type:'pie', time_limit: 'short_term' } }"
                         class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                         <span
                             class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">1
                             mes</span>
                     </router-link>
-                    <router-link :to="{ name: 'top-genres', params: { time_limit: 'medium_term' } }"
+                    <router-link :to="{ name: 'top-genres', params: {  chart_type:'pie', time_limit: 'medium_term' } }"
                         class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                         <span
                             class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">6
                             meses</span>
                     </router-link>
-                    <router-link :to="{ name: 'top-genres', params: { time_limit: 'long_term' } }"
+                    <router-link :to="{ name: 'top-genres', params: {  chart_type:'pie', time_limit: 'long_term' } }"
                         class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                         <span
                             class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">de
@@ -63,19 +63,19 @@
                     </p>
                 </div>
                 <div class="px-4 py-2">
-                    <router-link :to="{ name: 'top-genres', params: { time_limit: 'short_term' } }"
+                    <router-link :to="{ name: 'top-genres', params: {  chart_type:'bubble', time_limit: 'short_term' } }"
                         class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                         <span
                             class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">1
                             mes</span>
                     </router-link>
-                    <router-link :to="{ name: 'top-genres', params: { time_limit: 'medium_term' } }"
+                    <router-link :to="{ name: 'top-genres', params: { chart_type:'bubble', time_limit: 'medium_term' } }"
                         class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                         <span
                             class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">6
                             meses</span>
                     </router-link>
-                    <router-link :to="{ name: 'top-genres', params: { time_limit: 'long_term' } }"
+                    <router-link :to="{ name: 'top-genres', params: { chart_type:'bubble', time_limit: 'long_term' } }"
                         class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                         <span
                             class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">de
