@@ -1,29 +1,35 @@
-# spotycharts-dcdv
 
-This template should help get you started developing with Vue 3 in Vite.
+# musycharts-dcdv
 
-## Recommended IDE Setup
+Una app para ver tus gustos musicales
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-## Customize configuration
+## Authors
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- [@daiv05](https://www.github.com/daiv05)
 
-## Project Setup
 
-```sh
-npm install
+## Correr proyecto
+
+Para correr este proyecto en tu equipo.
+
+Instalar dependencias
+
+```bash
+  npm install
+```
+Ejecutar en local
+```bash
+  npm run dev
 ```
 
-### Compile and Hot-Reload for Development
 
-```sh
-npm run dev
-```
+## License
 
-### Compile and Minify for Production
+[MIT](https://choosealicense.com/licenses/mit/)
 
-```sh
-npm run build
-```
+
+![Logo](https://musycharts-dcdv.vercel.app/assets/musylogo22-220e9f8e.png)
+
+## Hecho en El Salvador
+
