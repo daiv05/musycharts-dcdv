@@ -3,7 +3,7 @@
         <!-- Grafico -->
         <div class="text-center md:w-1/2 pt-8 pb-8">
             <p class="leading-6 font-bold text-xl text-center">Top Géneros</p>
-            <div v-if="chart_type == 'pie'" class="flex justify-center">
+            <div v-if="chart_type == 'pie'" class="flex justify-center h-[400px]">
                 <pie-chart class="pb-4 pt-4 w-full mx-auto" :data="genreData10">
                 </pie-chart>
             </div>
@@ -13,7 +13,7 @@
             </div>
         </div>
         <!-- Lista artistas -->
-        <div v-if="artist_info != null" class="md:w-1/2 md:ml-4 pt-4 md:mt-4 pl-8 bg bg-gray-200">
+        <div v-if="artist_info10 != null" class="md:w-1/2 md:ml-4 pt-4 md:mt-4 pl-8 bg bg-gray-200">
             <img src="../assets/img/logo_spotify.png" alt="logo_spotify" style="background-color: white;"
                 class="w-32 border-8 -ml-2 border-white items-start m-8">
             <div class="md:flex md:flex-wrap">
@@ -28,7 +28,6 @@
                 </div>
             </div>
         </div>
-
         <div v-else>
             <h2>Cargando...</h2>
         </div>
@@ -57,7 +56,6 @@ export default {
     methods: {
         generateBubbleChart() {
             const data = this.genreData.map(d => ({ name: d[0], value: d[1], size: d[1] }));
-            console.log(data);
 
             // Crear el contenedor del gráfico
             const svg = d3.select(this.$refs.bubblechartd3)
@@ -150,7 +148,7 @@ export default {
             genreData.sort((a, b) => b[1] - a[1]);
 
             // Hacer una copia de los datos
-            if (this.genreData > 10) {
+            if (genreData.lenght > 10) {
                 this.genreData10 = genreData.slice(10);
             } else {
                 this.genreData10 = genreData;
@@ -175,13 +173,13 @@ export default {
             return axios.get('https://api.spotify.com/v1/me/top/artists?time_range=' + this.time_limit, { headers })
                 .then(response => {
                     const topArtists = response.data.items;
-                    this.artist_info = topArtists;
-                    // Realizar una copia de los datos
                     // Hacer una copia de los datos
-                    if (this.artist_info10 > 10) {
+                    if (topArtists.length > 10) {
                         this.artist_info10 = topArtists.slice(10);
+                        console.log('top artists > 10');
                     } else {
                         this.artist_info10 = topArtists;
+                        console.log('top artists < 10');
                     }
                     this.generateGenreData(topArtists);
                     console.log(topArtists);
@@ -190,8 +188,8 @@ export default {
                     console.log('error en getTopTracks');
                     console.log(error);
                     this.code = null;
-                    localStorage.removeItem('access_token'),
-                        this.$router.push({ path: '/' });
+                    localStorage.removeItem('access_token');
+                    this.$router.push({ path: '/' });
                     // if (error.response.data.error.message == 'Invalid authorization code' || error.response.data.error.message == 'The access token expired') {
                     //     console.log('autorizacion code invalido');
                     //     this.code = null;

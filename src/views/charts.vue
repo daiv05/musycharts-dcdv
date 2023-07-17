@@ -22,7 +22,7 @@
 
         <!-- CARDS -->
         <div
-            class="pt-4 md:w-2/4 sm:w-auto flex flex-wrap items-center w-2/4 justify-center md:justify-start order-2 md:order-none">
+            class="pt-4 md:w-2/4 sm:w-auto flex flex-wrap items-center justify-center md:justify-start order-2 md:order-none">
             <!-- Grafico de pastel -->
             <div
                 class="transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 max-w-sm mx-2 md:mx-4 pb-8 pt-8 mt-8 mb-4 rounded overflow-hidden shadow-lg">
