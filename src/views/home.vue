@@ -12,12 +12,12 @@
                 <button @click="login()"
                     class="bg-emerald-600 hover:bg-emerald-700 font-medium text-center text-white rounded h-[35px] w-[200px]">Iniciar
                     sesión con Spotify</button>
-                <div class="mt-2">
+                <!-- <div class="mt-2">
                     <a href="https://www.spotify.com/account/apps/" target="_blank"
                         class="font-normal text-center text-red-700 rounded h-[35px] w-[175px]">
                         Quitar acceso
                     </a>
-                </div>
+                </div> -->
 
             </div>
         </div>
