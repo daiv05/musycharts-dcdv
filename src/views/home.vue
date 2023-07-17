@@ -2,7 +2,7 @@
     <div class="flex flex-col items-center justify-center h-screen">
         <div class="flex flex-col md:flex-row justify-center pb-8">
             <div class="flex justify-center border-gray-800 border-4 mb-4 md:mb-0">
-                <img src="../assets/img/spotylogo22.png" alt="logo" class="w-auto h-auto max-w-full max-h-[40vh]">
+                <img src="../assets/img/musylogo22.png" alt="logo" class="w-auto h-auto max-w-full max-h-[40vh]">
             </div>
             <div class="flex flex-col items-center mt-4 md:ml-4 justify-center px-4">
                 <p class="text-xl md:text-2xl text-white mb-2 text-center md:text-left">Tus gustos musicales como nunca los
@@ -12,6 +12,13 @@
                 <button @click="login()"
                     class="bg-emerald-600 hover:bg-emerald-700 font-medium text-center text-white rounded h-[35px] w-[200px]">Iniciar
                     sesión con Spotify</button>
+                <div class="mt-2">
+                    <a href="https://www.spotify.com/account/apps/" target="_blank"
+                        class="font-normal text-center text-red-700 rounded h-[35px] w-[175px]">
+                        Quitar acceso
+                    </a>
+                </div>
+
             </div>
         </div>
 
@@ -30,7 +37,7 @@
                 </a>
             </div>
             <div class="text-center mt-2">
-                <p class="text-black">&copy; 2023 spotycharts-dcdv. Todos los derechos reservados.</p>
+                <p class="text-black">&copy; 2023 musycharts-dcdv. Todos los derechos reservados.</p>
             </div>
         </footer>
     </div>
@@ -74,6 +81,7 @@ async function login() {
         let state = generateRandomString(16);
         let scope = 'user-read-private user-read-email user-top-read';
 
+        localStorage.clear();
         localStorage.setItem('code_verifier', codeVerifier);
 
         let args = new URLSearchParams({

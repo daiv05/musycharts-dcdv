@@ -1,10 +1,10 @@
 <template>
-    <div class="md:flex items-center absolute inset-0 h-screen">
+    <div class="md:flex items-center inset-0">
         <!-- Grafico -->
         <div class="text-center md:w-1/2 pt-8 pb-8">
             <p class="leading-6 font-bold text-xl text-center">Top Géneros</p>
             <div v-if="chart_type == 'pie'" class="flex justify-center">
-                <pie-chart class="pb-4 pt-4 w-full mx-auto" :data="genreData">
+                <pie-chart class="pb-4 pt-4 w-full mx-auto" :data="genreData10">
                 </pie-chart>
             </div>
             <div v-if="chart_type == 'bubble'" class="flex justify-center">
@@ -13,17 +13,18 @@
             </div>
         </div>
         <!-- Lista artistas -->
-        <div v-if="artist_info != null" class="md:w-1/2 md:ml-4 mt-4 md:mt-0 pl-8">
+        <div v-if="artist_info != null" class="md:w-1/2 md:ml-4 pt-4 md:mt-4 pl-8 bg bg-gray-200">
+            <img src="../assets/img/logo_spotify.png" alt="logo_spotify" style="background-color: white;"
+                class="w-32 border-8 -ml-2 border-white items-start m-8">
             <div class="md:flex md:flex-wrap">
-                <div v-for="(artist, index) in artist_info" :key="artist.name" class="md:w-1/2">
-                    <div class="w-full" v-if="index < artist_info.length / 2">
-                        <img :src="artist.images[0].url" :alt="artist.name"
-                            :style="{ width: `${100 - index * 10}px`, height: `${100 - index * 10}px` }" class="md:block">
-                        <span class="text-sm md:text-base">{{ (index + 1) + '. ' + artist.name }}</span>
-                    </div>
-                    <div class="w-full" v-else>
-                        <span class="text-sm md:text-base">{{ (index + 1) + '. ' + artist.name }}</span>
-                    </div>
+                <div v-for="(artist, index) in artist_info10" :key="artist.name" class="md:w-1/2">
+                    <a :href="artist.external_urls.spotify" target="_blank">
+                        <div
+                            class="w-full my-2 transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 rounded overflow-hidden">
+                            <img :src="artist.images[0].url" style="width: 100px;" :alt="artist.name" class="md:block">
+                            <span class="text-sm text-black md:text-base">{{ (index + 1) + '. ' + artist.name }}</span>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -47,7 +48,9 @@ export default {
     data() {
         return {
             genreData: null,
+            genreData10: null,
             artist_info: null,
+            artist_info10: null,
             accessToken: localStorage.getItem('access_token'),
         };
     },
@@ -145,8 +148,13 @@ export default {
             }
             // Ordenar por cantidad de reproducciones
             genreData.sort((a, b) => b[1] - a[1]);
-            // Tomar los 10 primeros
-            genreData.splice(20);
+
+            // Hacer una copia de los datos
+            if (this.genreData > 10) {
+                this.genreData10 = genreData.slice(10);
+            } else {
+                this.genreData10 = genreData;
+            }
 
             this.genreData = genreData;
 
@@ -168,6 +176,13 @@ export default {
                 .then(response => {
                     const topArtists = response.data.items;
                     this.artist_info = topArtists;
+                    // Realizar una copia de los datos
+                    // Hacer una copia de los datos
+                    if (this.artist_info10 > 10) {
+                        this.artist_info10 = topArtists.slice(10);
+                    } else {
+                        this.artist_info10 = topArtists;
+                    }
                     this.generateGenreData(topArtists);
                     console.log(topArtists);
                 })
