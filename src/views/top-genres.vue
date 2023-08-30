@@ -20,7 +20,7 @@
                 <div v-for="(artist, index) in artist_info10" :key="artist.name" class="md:w-1/2">
                     <a :href="artist.external_urls.spotify" target="_blank">
                         <div
-                            class="w-full my-2 transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 rounded overflow-hidden">
+                            class="w-full my-2 transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 overflow-hidden">
                             <img :src="artist.images[0].url" style="width: 100px;" :alt="artist.name" class="md:block">
                             <span class="text-sm text-black md:text-base">{{ (index + 1) + '. ' + artist.name }}</span>
                         </div>
@@ -32,6 +32,10 @@
             <h2>Cargando...</h2>
         </div>
     </div>
+
+    <footer class="mt-8 flex justify-center items-center bg-gray-200 text-gray-600 text-sm">
+        <p class="text-center">Powered by <a href="https://www.spotify.com/" target="_blank">Spotify</a></p>
+    </footer>
 </template>
   
 

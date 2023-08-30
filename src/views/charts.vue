@@ -4,16 +4,16 @@
         <div class="w-full md:w-1/4 flex md:items-start justify-center order-1 md:order-none">
             <div v-if="perfil != null" class="text-center pt-20">
                 <a :href="perfil.external_urls.spotify" target="_blank">
-                    <img :src="perfil.images[0].url" class="mx-auto mb-4 w-24 md:w-32 rounded-lg" alt="Avatar" />
+                    <img :src="perfil.images[0].url" class="mx-auto mb-4 w-24 md:w-32" alt="Avatar" />
                     <h5 class="mb-2 text-lg md:text-xl font-medium leading-tight">{{ perfil.display_name }}</h5>
                     <p class="text-sm md:text-base text-neutral-500 dark:text-neutral-400">{{ perfil.country }}</p>
-                    <div class="mt-2">
-                        <a href="https://www.spotify.com/account/apps/" target="_blank"
-                            class="font-normal text-center text-sm text-red-200 rounded h-[35px] w-[175px]">
-                            Quitar acceso
-                        </a>
-                    </div>
                 </a>
+                <div class="mt-2">
+                    <a @click="disconnect_app()" href="#"
+                        class="font-normal text-center text-sm text-red-200 rounded h-[35px] w-[175px]">
+                        Quitar acceso
+                    </a>
+                </div>
             </div>
             <div v-else class="text-center">
                 <h5 class="mb-2 text-lg md:text-xl font-medium leading-tight">Cargando...</h5>
@@ -94,11 +94,15 @@
         </div>
 
     </div>
+    <footer class="flex justify-center items-center bg-gray-200 text-gray-600 text-sm">
+        <p class="text-center">Powered by <a href="https://www.spotify.com/" target="_blank">Spotify</a></p>
+    </footer>
 </template>
 
 <script>
 import axios from 'axios';
 import config from '@/config';
+import swal from 'sweetalert';
 
 export default {
     data() {
@@ -192,6 +196,24 @@ export default {
                     this.$router.push({ path: '/' });
                 });
         },
+        disconnect_app() {
+            swal({
+                title: "Quitar acceso a la app",
+                text: `Al dar click en Desconectar se te redirigirá a tu perfil de Spotify. Busca musycharts-dcdv y presiona en Eliminar acceso.`,
+                buttons: ["Cancelar", "Desconectar"],
+            })
+                .then((willDisconnect) => {
+                    if (willDisconnect) {
+                        localStorage.removeItem('access_token');
+                        this.accessToken = null;
+                        window.open('https://www.spotify.com/account/apps/', '_blank');
+                        this.$router.push({ path: '/' });
+                    } else {
+                        console.log('conexión no eliminada');
+                    }
+                }
+                );
+        }
     }
 };
 </script>

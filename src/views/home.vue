@@ -25,6 +25,7 @@
         <br>
         <!-- Footer -->
         <footer class="bg-gray-200 py-4 mt-8 absolute bottom-0 w-full">
+        <p class="text-center">Powered by <a href="https://www.spotify.com/" target="_blank">Spotify</a></p>
             <div class="flex justify-center items-center space-x-4">
                 <a href="https://github.com/daiv05" target="_blank" rel="noopener" class="mr-4">
                     <img src="../assets/img/github.svg" alt="GitHub" class="h-6 w-6">
