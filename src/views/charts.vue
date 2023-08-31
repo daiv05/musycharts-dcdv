@@ -1,5 +1,12 @@
 <template>
-    <div class="flex flex-col md:flex-row inset-0 bg-gray-950">
+    <!-- Regresar a la pagina anterior -->
+    <div class="flex bg-gray-950 justify-left items-center space-x-4">
+        <a @click="$router.go(-1)" href="#" class="mr-4 flex items-center">
+            <img src="../assets/img/arrow-left.svg" alt="Regresar" class="h-6 w-6 mr-1"> Regresar
+        </a>
+    </div>
+
+    <div class="flex md:flex-row bg-gray-950 h-full">
         <!-- PERFIL LOGIN INFO -->
         <div class="w-full md:w-1/4 flex md:items-start justify-center order-1 md:order-none">
             <div v-if="perfil != null" class="text-center pt-20">
@@ -21,8 +28,7 @@
         </div>
 
         <!-- CARDS -->
-        <div
-            class="pt-4 md:w-2/4 sm:w-auto flex flex-wrap items-center justify-center md:justify-start order-2 md:order-none">
+        <div class="pt-4 md:w-2/4 flex flex-wrap items-center justify-center order-2">
             <!-- Grafico de pastel -->
             <div
                 class="transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 max-w-sm mx-2 md:mx-4 pb-8 pt-8 mt-8 mb-4 rounded overflow-hidden shadow-lg">
@@ -94,8 +100,22 @@
         </div>
 
     </div>
-    <footer class="flex justify-center items-center bg-gray-200 text-gray-600 text-sm">
-        <p class="text-center">Powered by <a href="https://www.spotify.com/" target="_blank">Spotify</a></p>
+    <!-- Footer -->
+    <footer class="bg-gray-200 py-4 mt-2 w-full">
+        <div class="flex justify-center items-center space-x-4">
+            <a href="https://github.com/daiv05/musycharts-dcdv" target="_blank" rel="noopener" class="mr-4">
+                <img src="../assets/img/github.svg" alt="GitHub" class="h-6 w-6">
+            </a>
+            <a href="https://twitter.com/daiv_09" target="_blank" rel="noopener" class="mr-4">
+                <img src="../assets/img/twitter.svg" alt="Twitter" class="h-6 w-6">
+            </a>
+            <a href="mailto:davidderas50@gmail.com" target="_blank" rel="noopener" class="mr-4">
+                <img src="../assets/img/brand-gmail.svg" alt="Gmail" class="h-6 w-6">
+            </a>
+        </div>
+        <div class="text-center mt-2">
+            <p class="text-gray-700">&copy; 2023 musycharts-dcdv. Powered by Spotify AB.</p>
+        </div>
     </footer>
 </template>
 
@@ -119,30 +139,25 @@ export default {
         if (this.accessToken == null || this.accessToken == 'undefined') {
             this.getToken()
                 .then((res) => {
-                    console.log('token obtenido1');
-                    console.log(res);
                     return this.getProfile();
                 })
                 .catch((error) => {
                     this.code = null;
                     localStorage.removeItem('access_token');
                     this.accessToken = null;
-                    console.error('error aqui 1');
-                    console.error(error);
-                    this.$router.push({ path: '/' });
+                    this.message_token_expired();
+                    this.$router.push({ path: '/'});
                 });
         } else {
             this.getProfile()
                 .then((resp) => {
-                    console.log('perfil obtenido2');
-                    console.log(resp);
+                    console.log('Perfil obtenido');
                 }).catch((error) => {
                     this.code = null;
                     localStorage.removeItem('access_token');
                     this.accessToken = null;
-                    console.error('error aqui 2');
-                    console.error(error);
-                    this.$router.push({ path: '/' });
+                    this.message_token_expired();
+                    this.$router.push({ path: '/'});
                 });
         }
     },
@@ -165,15 +180,11 @@ export default {
                     this.accessToken = response.data.access_token
                 })
                 .catch(error => {
-                    // if (error.response.data.error.message == 'Invalid authorization code' || error.response.data.error.message == 'The access token expired') {
-                    //     console.log('autorizacion code invalido');
                     this.code = null;
                     localStorage.removeItem('access_token');
                     this.accessToken = null;
-                    this.$router.push({ path: '/' });
-                    // } else {
-                    //     throw new Error('Failed to get profile');
-                    // }
+                    this.message_token_expired();
+                    this.$router.push({ path: '/'});
                 });
         },
 
@@ -191,15 +202,14 @@ export default {
                     this.code = null;
                     localStorage.removeItem('access_token');
                     this.accessToken = null;
-                    console.error('error aqui 2');
-                    console.error(error);
+                    this.message_token_expired();
                     this.$router.push({ path: '/' });
                 });
         },
         disconnect_app() {
             swal({
                 title: "Quitar acceso a la app",
-                text: `Al dar click en Desconectar se te redirigirá a tu perfil de Spotify. Busca musycharts-dcdv y presiona en Eliminar acceso.`,
+                text: "Al dar click en Desconectar se te redirigirá a tu perfil de Spotify. Busca musycharts-dcdv y presiona en Eliminar acceso.",
                 buttons: ["Cancelar", "Desconectar"],
             })
                 .then((willDisconnect) => {
@@ -213,6 +223,14 @@ export default {
                     }
                 }
                 );
+        },
+        message_token_expired(){
+            swal({
+                title: "Error",
+                text: "Token de acceso expirado. Por favor, vuelve a iniciar sesión.",
+                icon: "error",
+                button: "OK",
+            });
         }
     }
 };

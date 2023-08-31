@@ -1,7 +1,7 @@
 <template>
-    <div class="flex flex-col items-center justify-center h-screen">
-        <div class="flex flex-col md:flex-row justify-center pb-8">
-            <div class="flex justify-center border-gray-800 border-4 mb-4 md:mb-0">
+    <div class="flex items-center justify-center h-screen">
+        <div class="flex flex-col md:flex-row justify-center">
+            <div class="flex justify-center mb-4 md:mb-0">
                 <img src="../assets/img/musylogo22.png" alt="logo" class="w-auto h-auto max-w-full max-h-[40vh]">
             </div>
             <div class="flex flex-col items-center mt-4 md:ml-4 justify-center px-4">
@@ -12,36 +12,35 @@
                 <button @click="login()"
                     class="bg-emerald-600 hover:bg-emerald-700 font-medium text-center text-white rounded h-[35px] w-[200px]">Iniciar
                     sesión con Spotify</button>
-                <!-- <div class="mt-2">
-                    <a href="https://www.spotify.com/account/apps/" target="_blank"
-                        class="font-normal text-center text-red-700 rounded h-[35px] w-[175px]">
-                        Quitar acceso
-                    </a>
-                </div> -->
+                <p class="text-sm md:text-base text-white my-4 text-center">o</p>
+                <router-link :to="{ name: 'stats' }"
+                    class="bg-indigo-800 flex items-center justify-center hover:bg-indigo-900 font-medium text-white rounded h-[35px] w-[100px]">
+                    Ingresar
+                </router-link>
 
             </div>
         </div>
 
         <br>
-        <!-- Footer -->
-        <footer class="bg-gray-200 py-4 mt-8 absolute bottom-0 w-full">
-        <p class="text-center">Powered by <a href="https://www.spotify.com/" target="_blank">Spotify</a></p>
-            <div class="flex justify-center items-center space-x-4">
-                <a href="https://github.com/daiv05" target="_blank" rel="noopener" class="mr-4">
-                    <img src="../assets/img/github.svg" alt="GitHub" class="h-6 w-6">
-                </a>
-                <a href="https://twitter.com/daiv_09" target="_blank" rel="noopener" class="mr-4">
-                    <img src="../assets/img/twitter.svg" alt="Twitter" class="h-6 w-6">
-                </a>
-                <a href="mailto:davidderas50@gmail.com" target="_blank" rel="noopener" class="mr-4">
-                    <img src="../assets/img/brand-gmail.svg" alt="Gmail" class="h-6 w-6">
-                </a>
-            </div>
-            <div class="text-center mt-2">
-                <p class="text-black">&copy; 2023 musycharts-dcdv. Todos los derechos reservados.</p>
-            </div>
-        </footer>
+
     </div>
+    <!-- Footer -->
+    <footer class="bg-gray-200 py-4 md:mt-4 w-full">
+        <div class="flex justify-center items-center space-x-4">
+            <a href="https://github.com/daiv05/musycharts-dcdv" target="_blank" rel="noopener" class="mr-4">
+                <img src="../assets/img/github.svg" alt="GitHub" class="h-6 w-6">
+            </a>
+            <a href="https://twitter.com/daiv_09" target="_blank" rel="noopener" class="mr-4">
+                <img src="../assets/img/twitter.svg" alt="Twitter" class="h-6 w-6">
+            </a>
+            <a href="mailto:davidderas50@gmail.com" target="_blank" rel="noopener" class="mr-4">
+                <img src="../assets/img/brand-gmail.svg" alt="Gmail" class="h-6 w-6">
+            </a>
+        </div>
+        <div class="text-center mt-2">
+            <p class="text-gray-700">&copy; 2023 musycharts-dcdv. Powered by Spotify AB.</p>
+        </div>
+    </footer>
 </template>
 
 <script setup>
