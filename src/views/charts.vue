@@ -6,19 +6,31 @@
         </a>
     </div>
 
-    <div class="flex md:flex-row bg-gray-950 h-full">
+    <div class="grid grid-cols-12 bg-gray-950 h-full">
         <!-- PERFIL LOGIN INFO -->
-        <div class="w-full md:w-1/4 flex md:items-start justify-center order-1 md:order-none">
-            <div v-if="perfil != null" class="text-center pt-20">
+        <div class="col-span-3 md:col-span-2 items-start justify-center">
+            <div v-if="perfil != null" class="text-center mt-20 py-4 bg-slate-950 overflow-hidden shadow-lg">
                 <a :href="perfil.external_urls.spotify" target="_blank">
-                    <img :src="perfil.images[0].url" class="mx-auto mb-4 w-24 md:w-32" alt="Avatar" />
-                    <h5 class="mb-2 text-lg md:text-xl font-medium leading-tight">{{ perfil.display_name }}</h5>
-                    <p class="text-sm md:text-base text-neutral-500 dark:text-neutral-400">{{ perfil.country }}</p>
+                    <img :src="perfil.images[0].url" class="mx-auto mb-4 w-20 md:w-24" alt="Avatar" />
+                    <h5 class="mb-2 text-lg md:text-xl font-medium leading-tight">{{ perfil.display_name + ' - ' + perfil.country}} </h5>
                 </a>
                 <div class="mt-2">
-                    <a @click="disconnect_app()" href="#"
-                        class="font-normal text-center text-sm text-red-200 rounded h-[35px] w-[175px]">
-                        Quitar acceso
+                    <a @click="disconnect_app()" href="#" class="font-normal text-center text-sm rounded" style="color: #651111;">
+                        <svg class="inline-block h-6 w-6 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path
+                                    d="M8.00195 7C8.01406 4.82497 8.11051 3.64706 8.87889 2.87868C9.75757 2 11.1718 2 14.0002 2H15.0002C17.8286 2 19.2429 2 20.1215 2.87868C21.0002 3.75736 21.0002 5.17157 21.0002 8V16C21.0002 18.8284 21.0002 20.2426 20.1215 21.1213C19.2429 22 17.8286 22 15.0002 22H14.0002C11.1718 22 9.75757 22 8.87889 21.1213C8.11051 20.3529 8.01406 19.175 8.00195 17"
+                                    stroke="#651111" stroke-width="1.5" stroke-linecap="round"></path>
+                                <path
+                                    d="M8 19.5C5.64298 19.5 4.46447 19.5 3.73223 18.7678C3 18.0355 3 16.857 3 14.5V9.5C3 7.14298 3 5.96447 3.73223 5.23223C4.46447 4.5 5.64298 4.5 8 4.5"
+                                    stroke="#651111" stroke-width="1.5"></path>
+                                <path d="M15 12L6 12M6 12L8 14M6 12L8 10" stroke="#651111" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round"></path>
+                            </g>
+                        </svg>
+                        Cerrar sesión
                     </a>
                 </div>
             </div>
@@ -28,75 +40,76 @@
         </div>
 
         <!-- CARDS -->
-        <div class="pt-4 md:w-2/4 flex flex-wrap items-center justify-center order-2">
-            <!-- Grafico de pastel -->
-            <div
-                class="transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 max-w-sm mx-2 md:mx-4 pb-8 pt-8 mt-8 mb-4 rounded overflow-hidden shadow-lg">
-                <img class="w-full h-40 md:h-64 object-cover" src="../assets/img/pastel-img.png"
-                    alt="Sunset in the mountains">
-                <div class="px-4 py-2">
-                    <div class="font-bold text-lg md:text-xl mb-2">Musypie</div>
-                    <p class="text-sm md:text-base text-gray-400">
-                        Descubre cuales géneros son los que más escuchas y cuales son tus artistas favoritos.
-                    </p>
+        <div class="col-span-9 items-center justify-center mb-4 pt-8">
+            <div class="grid grid-cols-12">
+                <!-- Grafico de pastel -->
+                <div
+                    class="md:col-span-6 col-span-11 transition hover:-translate-y-1 hover:scale-105 ease-in-out mx-4 delay-100 pb-8 mb-4 rounded overflow-hidden shadow-lg">
+                    <img class="w-full h-35 md:h-64 object-cover" src="../assets/img/pastel-img.png"
+                        alt="Sunset in the mountains">
+                    <div class="px-4 py-2">
+                        <div class="font-bold text-lg md:text-xl mb-2">Musypie</div>
+                        <p class="text-sm md:text-base text-gray-400">
+                            Descubre cuales géneros son los que más escuchas y cuales son tus artistas favoritos.
+                        </p>
+                    </div>
+                    <div class="px-4 py-2">
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'pie', time_limit: 'short_term' } }"
+                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
+                            <span
+                                class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">1
+                                mes</span>
+                        </router-link>
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'pie', time_limit: 'medium_term' } }"
+                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
+                            <span
+                                class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">6
+                                meses</span>
+                        </router-link>
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'pie', time_limit: 'long_term' } }"
+                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
+                            <span
+                                class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">de
+                                todos los tiempos</span>
+                        </router-link>
+                    </div>
                 </div>
-                <div class="px-4 py-2">
-                    <router-link :to="{ name: 'top-genres', params: { chart_type: 'pie', time_limit: 'short_term' } }"
-                        class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
-                        <span
-                            class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">1
-                            mes</span>
-                    </router-link>
-                    <router-link :to="{ name: 'top-genres', params: { chart_type: 'pie', time_limit: 'medium_term' } }"
-                        class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
-                        <span
-                            class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">6
-                            meses</span>
-                    </router-link>
-                    <router-link :to="{ name: 'top-genres', params: { chart_type: 'pie', time_limit: 'long_term' } }"
-                        class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
-                        <span
-                            class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">de
-                            todos los tiempos</span>
-                    </router-link>
-
-
-
+                <!-- Grafico de burbujas -->
+                <div
+                    class="md:col-span-6 col-span-11 transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 mx-4 mb-4 pb-8 rounded overflow-hidden shadow-lg">
+                    <img class="w-full h-35 md:h-64 object-cover" src="../assets/img/bubble-img.png"
+                        alt="Sunset in the mountains">
+                    <div class="px-4 py-2">
+                        <div class="font-bold text-lg md:text-xl mb-2">Musybubble</div>
+                        <p class="text-sm md:text-base text-gray-400">
+                            Descubre cuales géneros son los que más escuchas y cuales son tus artistas favoritos.
+                        </p>
+                    </div>
+                    <div class="px-4 py-2">
+                        <router-link
+                            :to="{ name: 'top-genres', params: { chart_type: 'bubble', time_limit: 'short_term' } }"
+                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
+                            <span
+                                class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">1
+                                mes</span>
+                        </router-link>
+                        <router-link
+                            :to="{ name: 'top-genres', params: { chart_type: 'bubble', time_limit: 'medium_term' } }"
+                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
+                            <span
+                                class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">6
+                                meses</span>
+                        </router-link>
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'bubble', time_limit: 'long_term' } }"
+                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
+                            <span
+                                class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">de
+                                todos los tiempos</span>
+                        </router-link>
+                    </div>
                 </div>
             </div>
 
-            <!-- Grafico de burbujas -->
-            <div
-                class="transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 max-w-sm mx-2 md:mx-4 mb-4 pb-8 rounded overflow-hidden shadow-lg">
-                <img class="w-full h-40 md:h-64 object-cover" src="../assets/img/bubble-img.png"
-                    alt="Sunset in the mountains">
-                <div class="px-4 py-2">
-                    <div class="font-bold text-lg md:text-xl mb-2">Musybubble</div>
-                    <p class="text-sm md:text-base text-gray-400">
-                        Descubre cuales géneros son los que más escuchas y cuales son tus artistas favoritos.
-                    </p>
-                </div>
-                <div class="px-4 py-2">
-                    <router-link :to="{ name: 'top-genres', params: { chart_type: 'bubble', time_limit: 'short_term' } }"
-                        class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
-                        <span
-                            class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">1
-                            mes</span>
-                    </router-link>
-                    <router-link :to="{ name: 'top-genres', params: { chart_type: 'bubble', time_limit: 'medium_term' } }"
-                        class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
-                        <span
-                            class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">6
-                            meses</span>
-                    </router-link>
-                    <router-link :to="{ name: 'top-genres', params: { chart_type: 'bubble', time_limit: 'long_term' } }"
-                        class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
-                        <span
-                            class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">de
-                            todos los tiempos</span>
-                    </router-link>
-                </div>
-            </div>
         </div>
 
     </div>
@@ -123,6 +136,7 @@
 import axios from 'axios';
 import config from '@/config';
 import swal from 'sweetalert';
+import { svg } from 'd3';
 
 export default {
     data() {
@@ -146,9 +160,10 @@ export default {
                     localStorage.removeItem('access_token');
                     this.accessToken = null;
                     this.message_token_expired();
-                    this.$router.push({ path: '/'});
+                    this.$router.push({ path: '/' });
                 });
-        } else {
+        }
+        else {
             this.getProfile()
                 .then((resp) => {
                     console.log('Perfil obtenido');
@@ -157,7 +172,7 @@ export default {
                     localStorage.removeItem('access_token');
                     this.accessToken = null;
                     this.message_token_expired();
-                    this.$router.push({ path: '/'});
+                    this.$router.push({ path: '/' });
                 });
         }
     },
@@ -177,17 +192,16 @@ export default {
             })
                 .then(response => {
                     localStorage.setItem('access_token', response.data.access_token);
-                    this.accessToken = response.data.access_token
+                    this.accessToken = response.data.access_token;
                 })
                 .catch(error => {
                     this.code = null;
                     localStorage.removeItem('access_token');
                     this.accessToken = null;
                     this.message_token_expired();
-                    this.$router.push({ path: '/'});
+                    this.$router.push({ path: '/' });
                 });
         },
-
         getProfile() {
             return axios.get('https://api.spotify.com/v1/me', {
                 headers: {
@@ -210,7 +224,11 @@ export default {
             swal({
                 title: "Quitar acceso a la app",
                 text: "Al dar click en Desconectar se te redirigirá a tu perfil de Spotify. Busca musycharts-dcdv y presiona en Eliminar acceso.",
-                buttons: ["Cancelar", "Desconectar"],
+                buttons: [
+                    "Cancelar",
+                    "Desconectar", // <-- add the ".btn-danger" class for red buttons
+                ],
+                dangerMode: true,
             })
                 .then((willDisconnect) => {
                     if (willDisconnect) {
@@ -218,13 +236,13 @@ export default {
                         this.accessToken = null;
                         window.open('https://www.spotify.com/account/apps/', '_blank');
                         this.$router.push({ path: '/' });
-                    } else {
+                    }
+                    else {
                         console.log('conexión no eliminada');
                     }
-                }
-                );
+                });
         },
-        message_token_expired(){
+        message_token_expired() {
             swal({
                 title: "Error",
                 text: "Token de acceso expirado. Por favor, vuelve a iniciar sesión.",
@@ -232,6 +250,7 @@ export default {
                 button: "OK",
             });
         }
-    }
+    },
+    components: { svg }
 };
 </script>

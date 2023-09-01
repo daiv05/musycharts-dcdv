@@ -9,7 +9,7 @@
         <!-- Grafico -->
         <div class="text-center md:w-1/2 pt-8 pb-8">
             <p class="leading-6 font-bold text-xl text-center">Top Géneros</p>
-            <div v-if="chart_type == 'pie'" class="flex justify-center h-[400px]">
+            <div v-if="chart_type == 'pie'" class="flex justify-center md:h-[100px]">
                 <pie-chart class="pb-4 pt-4 w-full mx-auto" :data="genreData10">
                 </pie-chart>
             </div>
@@ -21,14 +21,14 @@
         <!-- Lista artistas -->
         <div v-if="artist_info10 != null" class="md:w-1/2 md:ml-4 pt-4 md:mt-4 pl-8 bg bg-gray-200">
             <img src="../assets/img/logo_spotify.png" alt="logo_spotify" class="w-32 -ml-2 items-start m-8">
-            <div class="flex flex-wrap">
+            <div class="flex flex-wrap grid-cols-6">
                 <div v-for="(artist, index) in artist_info10" :key="artist.name" class="md:w-1/2 px-2">
                     <a :href="artist.external_urls.spotify" target="_blank">
                         <div
                             class="w-full my-2 transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 overflow-hidden">
                             <img :src="artist.images[0].url" style="height: 100px;" :alt="artist.name" class="md:block">
-                            <span class="text-sm text-black md:text-base">
-                                <h5 class="font-bold">{{ '#' + (index + 1) + ' ' }}</h5> {{ artist.name }}
+                            <span class="text-sm text-black md:text-base" style="width: 100px;">
+                                <h5 class="font-bold" style="width: 100px;">{{ '#' + (index + 1) + ' ' }}</h5> {{ artist.name }}
                             </span>
                         </div>
                     </a>
@@ -134,10 +134,10 @@ export default {
                 .attr("x", d => d.x)
                 .attr("y", d => d.y)
                 .attr("dy", "0.3em")
-                .style("height", "20px")
+                .style("width", "20px")
                 .style("text-anchor", "middle")
-                .style("font-size", "15px")
-                .style("font-family", "system-ui")
+                .style("font-size", d => d.data.value * 7 + "px")
+                .style("font-family", "sans-serif")
                 .style("font-weight", "bold")
                 .style("white-space", "pre-wrap")
                 .style("word-break", "break-all")
@@ -148,14 +148,14 @@ export default {
                     d3.select(this)
                         .transition()
                         .duration(200)
-                        .style("font-size", "20px")
+                        .style("font-size", d => d.data.value * 9 + "px")
                         .style("ease-in-out")
                 })
                 .on('mouseout', function (d) {
                     d3.select(this)
                         .transition()
                         .duration(200)
-                        .style("font-size", "15px")
+                        .style("font-size", d => d.data.value * 7 + "px")
                         .style("ease-in-out")
                 });
         },
