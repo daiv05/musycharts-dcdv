@@ -1,6 +1,6 @@
 {
-  "name": "spotycharts-dcdv",
-  "version": "0.0.0",
+  "name": "musycharts-dcdv",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",
