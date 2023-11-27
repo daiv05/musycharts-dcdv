@@ -10,8 +10,12 @@
         <!-- PERFIL LOGIN INFO -->
         <div class="col-span-3 md:col-span-2 items-start justify-center">
             <div v-if="perfil != null" class="text-center mt-20 py-4 bg-slate-950 overflow-hidden shadow-lg">
-                <a :href="perfil.external_urls.spotify" target="_blank">
+                <a v-if="perfil.images[0]" :href="perfil.external_urls.spotify" target="_blank">
                     <img :src="perfil.images[0].url" class="mx-auto mb-4 w-20 md:w-24" alt="Avatar" />
+                    <h5 class="mb-2 text-lg md:text-xl font-medium leading-tight">{{ perfil.display_name + ' - ' + perfil.country}} </h5>
+                </a>
+                <a v-else :href="perfil.external_urls.spotify" target="_blank">
+                    <img src="../assets/img/boy.png" class="mx-auto mb-4 w-20 md:w-24" alt="Avatar" />
                     <h5 class="mb-2 text-lg md:text-xl font-medium leading-tight">{{ perfil.display_name + ' - ' + perfil.country}} </h5>
                 </a>
                 <div class="mt-2">
