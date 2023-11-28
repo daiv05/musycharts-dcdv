@@ -157,26 +157,20 @@ export default {
         if (this.accessToken == null || this.accessToken == 'undefined') {
             this.getToken()
                 .then((res) => {
+                    console.log(res);
                     return this.getProfile();
                 })
                 .catch((error) => {
-                    this.code = null;
-                    localStorage.removeItem('access_token');
-                    this.accessToken = null;
-                    this.message_token_expired();
-                    this.$router.push({ path: '/' });
+                    console.log(error);
                 });
         }
         else {
             this.getProfile()
                 .then((resp) => {
                     console.log('Perfil obtenido');
+                    console.log(resp);
                 }).catch((error) => {
-                    this.code = null;
-                    localStorage.removeItem('access_token');
-                    this.accessToken = null;
-                    this.message_token_expired();
-                    this.$router.push({ path: '/' });
+                    console.log(error);
                 });
         }
     },
@@ -199,11 +193,7 @@ export default {
                     this.accessToken = response.data.access_token;
                 })
                 .catch(error => {
-                    this.code = null;
-                    localStorage.removeItem('access_token');
-                    this.accessToken = null;
-                    this.message_token_expired();
-                    this.$router.push({ path: '/' });
+                    console.log(error);
                 });
         },
         getProfile() {
@@ -217,11 +207,7 @@ export default {
                     return response;
                 })
                 .catch(error => {
-                    this.code = null;
-                    localStorage.removeItem('access_token');
-                    this.accessToken = null;
-                    this.message_token_expired();
-                    this.$router.push({ path: '/' });
+                    console.log(error);
                 });
         },
         disconnect_app() {
@@ -246,14 +232,6 @@ export default {
                     }
                 });
         },
-        message_token_expired() {
-            swal({
-                title: "Error",
-                text: "Token de acceso expirado. Por favor, vuelve a iniciar sesión.",
-                icon: "error",
-                button: "OK",
-            });
-        }
     },
     components: { svg }
 };
