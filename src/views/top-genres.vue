@@ -10,6 +10,10 @@
         <div class="text-center md:w-1/2 pt-8 pb-8">
             <div>
                 <p class="leading-6 font-bold text-xl text-center">Top Géneros</p>
+
+                <!-- -->
+                <!-- PIE CHARTS -->
+                <!-- -->
                 <div v-if="chart_type == 'pie'">
                     <transition name="fade">
                         <div v-show="pie_type == 'pie'" id="chartdiv_1"></div>
@@ -21,10 +25,37 @@
                         <div v-show="pie_type == 'gradient'" id="chartdiv_3"></div>
                     </transition>
                 </div>
+
+                <!-- -->
+                <!-- BUBBLE CHARTS -->
+                <!-- -->
                 <div v-if="chart_type == 'bubble'" class="flex justify-center">
                     <div id="chartdiv_4"></div>
                 </div>
+
+                <!-- -->
+                <!-- RADAR CHARTS -->
+                <!-- -->
+                <div v-if="chart_type == 'radar'" class="flex justify-center">
+                    <transition name="fade">
+                        <div id="chartdiv_5"></div>
+                    </transition>
+                </div>
+
+                <!-- -->
+                <!-- GAUDE CHARTS -->
+                <!-- -->
+                <div v-if="chart_type == 'gauge'" class="flex justify-center">
+                    <transition name="fade">
+                        <div id="chartdiv_6"></div>
+                    </transition>
+                </div>
+
             </div>
+
+            <!-- -->
+            <!-- PIE TYPES -->
+            <!-- -->
             <select v-if="chart_type == 'pie'" v-model="pie_type"
                 class="bg-gray-950 text-white text-center text-sm font-semibold py-2 px-4 border border-gray-700 rounded shadow">
                 <option value="pie">pie</option>
@@ -32,6 +63,7 @@
                 <option value="gradient">grainy gradient</option>
             </select>
         </div>
+
         <!-- Lista artistas -->
         <transition name="fade">
             <div v-if="artist_info10 != null" class="md:w-1/2 md:ml-4 pt-4 md:mt-4 pl-8 bg bg-gray-200">
@@ -82,6 +114,8 @@ import axios from 'axios';
 import * as am5 from "@amcharts/amcharts5";
 import * as am5percent from "@amcharts/amcharts5/percent";
 import * as am5hierarchy from "@amcharts/amcharts5/hierarchy";
+import * as am5radar from "@amcharts/amcharts5/radar";
+import * as am5xy from "@amcharts/amcharts5/xy";
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import am5themes_Material from '@amcharts/amcharts5/themes/Material';
 import am5themes_Responsive from '@amcharts/amcharts5/themes/Responsive';
@@ -91,6 +125,7 @@ export default {
     data() {
         return {
             pie_type: 'pie',
+            radar_type: 'histo',
             genreData: null,
             genreData10: null,
             artist_info: null,
@@ -99,86 +134,6 @@ export default {
         };
     },
     methods: {
-        // generateBubbleChart() {
-        //     const data = this.genreData10.map(d => ({ name: d[0], value: d[1], size: d[1] }));
-        //     // Crear el contenedor del gráfico
-        //     const svg = d3.select(this.$refs.bubblechartd3)
-        //         .append("svg")
-        //         .attr("width", 400)
-        //         .attr("height", 400)
-        //         .style("background-color", "white")
-        //         .style("border-radius", "50%")
-        //         .style("border", "1px solid black")
-        //         .style("box-shadow", "0 0 10px rgba(0, 0, 0, 0.2)")
-        //         .style("margin", "0 auto")
-        //         .style("display", "block")
-        //         .style("overflow", "visible")
-        //         .style("position", "relative")
-        //         .style("padding", "10px")
-        //         .style("box-sizing", "border-box");
-        //     // Crear una escala para el tamaño de las burbujas
-        //     const sizeScale = d3.scaleLinear()
-        //         .domain([0, d3.max(data, d => d.size)])
-        //         .range([5, 30]);
-        //     // Crear el paquete de burbujas
-        //     const pack = d3.pack()
-        //         .size([350, 350])
-        //         .padding(1);
-        //     // Calcular los nodos del paquete de burbujas
-        //     const root = d3.hierarchy({ children: data })
-        //         .sum(d => d.value);
-        //     const nodes = pack(root).descendants();
-        //     const colorScale = scaleOrdinal()
-        //         .domain([0, nodes.length]) // Dominio de la escala
-        //         .range([0, 1]) // Rango de la escala
-        //         .range(nodes.map((d, i) => interpolateSinebow(i / nodes.length))); // Mapear los colores utilizando interpolateSinebow
-        //     // Dibujar las burbujas
-        //     svg.selectAll(".bubble")
-        //         .data(nodes)
-        //         .enter()
-        //         .append("circle")
-        //         .attr("class", "bubble")
-        //         .attr("cx", d => d.x)
-        //         .attr("cy", d => d.y)
-        //         .attr("r", d => d.r)
-        //         .style("fill", (d, i) => colorScale(i)) // Cambia el color de las burbujas
-        //         .style("stroke", "black") // Cambia el color del borde de las burbujas
-        //         .style("stroke-width", 2) // Cambia el grosor del borde de las burbujas
-        //         .style("filter", "drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.4))") // Agrega una sombra a las burbujas
-        //     // Agregar etiquetas a las burbujas
-        //     svg.selectAll(".label")
-        //         .data(nodes)
-        //         .enter()
-        //         .append("text")
-        //         .attr("class", "label")
-        //         .attr("x", d => d.x)
-        //         .attr("y", d => d.y)
-        //         .attr("dy", "0.3em")
-        //         .style("width", "20px")
-        //         .style("text-anchor", "middle")
-        //         .style("font-size", d => d.data.value * 7 + "px")
-        //         .style("font-family", "sans-serif")
-        //         .style("font-weight", "bold")
-        //         .style("white-space", "pre-wrap")
-        //         .style("word-break", "break-all")
-        //         .style("fill", (d, i) => colorScale(i))
-        //         .style("text-shadow", "1px 1px 1px #000, -1px -1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000")
-        //         .text(d => d.data.name)
-        //         .on("mouseover", function (d) {
-        //             d3.select(this)
-        //                 .transition()
-        //                 .duration(200)
-        //                 .style("font-size", d => d.data.value * 9 + "px")
-        //                 .style("ease-in-out")
-        //         })
-        //         .on('mouseout', function (d) {
-        //             d3.select(this)
-        //                 .transition()
-        //                 .duration(200)
-        //                 .style("font-size", d => d.data.value * 7 + "px")
-        //                 .style("ease-in-out")
-        //         });
-        // },
         generateGenreData(topArtists) {
             const genreCounts = {};
             topArtists.forEach((artist) => {
@@ -215,35 +170,38 @@ export default {
             ];
             if (this.chart_type == 'bubble') {
                 this.am5_bubble_v1(data_chart);
-            } else {
+            } else if (this.chart_type == 'pie') {
                 this.am5_pie_v1(data_chart);
                 this.am5_pie_v2(data_chart);
                 this.am5_pie_v3(data_chart);
+            } else if (this.chart_type == 'radar') {
+                this.am5_radar_v1(data_chart);
+            } else {
+                this.am5_gauge_v1(data_chart);
             }
         },
-        getTopArtist() {
+        async getTopArtist() {
             this.genreData = null;
             const headers = {
                 Authorization: 'Bearer ' + this.accessToken
             };
-            return axios.get('https://api.spotify.com/v1/me/top/artists?time_range=' + this.time_limit, { headers })
-                .then(response => {
-                    const topArtists = response.data.items;
-                    // Hacer una copia de los datos
-                    if (topArtists.length > 10) {
-                        this.artist_info10 = topArtists.slice(0, 10);
-                        console.log('top artists > 10');
-                    } else {
-                        this.artist_info10 = topArtists;
-                        console.log('top artists < 10');
-                    }
-                    this.generateGenreData(topArtists);
-                    console.log(topArtists);
-                })
-                .catch(error => {
-                    console.log('error en getTopTracks');
-                    console.log(error);
-                });
+            try {
+                const response = await axios.get('https://api.spotify.com/v1/me/top/artists?time_range=' + this.time_limit, { headers });
+                const topArtists = response.data.items;
+                // Hacer una copia de los datos
+                if (topArtists.length > 10) {
+                    this.artist_info10 = topArtists.slice(0, 10);
+                    console.log('top artists > 10');
+                } else {
+                    this.artist_info10 = topArtists;
+                    console.log('top artists < 10');
+                }
+                this.generateGenreData(topArtists);
+                console.log(topArtists);
+            } catch (error) {
+                console.log('error en getTopTracks');
+                console.log(error);
+            }
         },
         am5_pie_v1(data_pie) {
             am5.ready(function () {
@@ -438,9 +396,212 @@ export default {
 
             });
         },
+        am5_radar_v1(data_radar) {
+            am5.ready(function () {
+                var root = am5.Root.new("chartdiv_5");
+                root.setThemes([
+                    am5themes_Animated.new(root),
+                    am5themes_Material.new(root)
+                ]);
+                var chart = root.container.children.push(am5radar.RadarChart.new(root, {
+                    panX: false,
+                    panY: false,
+                    wheelX: "none",
+                    wheelY: "none",
+                    startAngle: -84,
+                    endAngle: 264,
+                    innerRadius: am5.percent(40)
+                }));
+                const cursor = chart.set("cursor", am5radar.RadarCursor.new(root, {
+                    behavior: "zoomX"
+                }));
+                cursor.lineY.set("forceHidden", true);
+                chart.set("scrollbarX", am5.Scrollbar.new(root, {
+                    orientation: "horizontal",
+                    exportable: false
+                }));
+                var xRenderer = am5radar.AxisRendererCircular.new(root, {
+                    minGridDistance: 30
+                });
+                xRenderer.grid.template.set("forceHidden", true);
+                xRenderer.labels.template.set("fill", am5.color("#fff"));
+                var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+                    maxDeviation: 0,
+                    categoryField: "category",
+                    renderer: xRenderer
+                }));
+                var yRenderer = am5radar.AxisRendererRadial.new(root, {});
+                yRenderer.labels.template.set("centerX", am5.p50);
+                yRenderer.labels.template.set("fill", am5.color("#fff"));
+                var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                    maxDeviation: 0.3,
+                    min: 0,
+                    renderer: yRenderer
+                }));
+                var series = chart.series.push(am5radar.RadarColumnSeries.new(root, {
+                    name: "Series 1",
+                    sequencedInterpolation: true,
+                    xAxis: xAxis,
+                    yAxis: yAxis,
+                    valueYField: "value",
+                    categoryXField: "category"
+                }));
+                // Rounded corners for columns
+                series.columns.template.setAll({
+                    cornerRadius: 5,
+                    tooltipText: "{categoryX}: {valueY}"
+                });
+                // Make each column to be of a different color
+                series.columns.template.adapters.add("fill", function (fill, target) {
+                    return chart.get("colors").getIndex(series.columns.indexOf(target));
+                });
+                series.columns.template.adapters.add("stroke", function (stroke, target) {
+                    return chart.get("colors").getIndex(series.columns.indexOf(target));
+                });
+
+                var data = data_radar;
+                xAxis.data.setAll(data);
+                series.data.setAll(data);
+                series.appear(1000);
+                chart.appear(1000, 100);
+            });
+        },
+        am5_gauge_v1(data_gauge) {
+            am5.ready(function () {
+                var root = am5.Root.new("chartdiv_6");
+                root.setThemes([
+                    am5themes_Animated.new(root),
+                    am5themes_Material.new(root)
+                ]);
+                var chart = root.container.children.push(am5radar.RadarChart.new(root, {
+                    panX: false,
+                    panY: false,
+                    wheelX: "panX",
+                    wheelY: "zoomX",
+                    innerRadius: am5.percent(40),
+                    startAngle: -90,
+                    endAngle: 180
+                }));
+
+
+                // Suma de todos los valores
+                var sum = 0;
+                data_gauge.forEach((element) => {
+                    sum += element.value;
+                });
+
+                // Recorrer data_gauge y agregar propiedades de full, columnSettings.
+                var i = 0;
+                data_gauge.forEach((element, index) => {
+                    // Obtener porcentaje respecto a los demas elementos a partir del value
+                    element.value = (sum / element.value);
+                    element.full = 100;
+                    element.columnSettings = {
+                        fill: chart.get("colors").getIndex(i++)
+                    };
+                });
+
+                console.log(data_gauge);
+
+                // Data
+                var data = data_gauge;
+
+                var cursor = chart.set("cursor", am5radar.RadarCursor.new(root, {
+                    behavior: "zoomX"
+                }));
+
+                cursor.lineY.set("visible", false);
+
+                var xRenderer = am5radar.AxisRendererCircular.new(root, {
+                    minGridDistance: 50
+                });
+
+                xRenderer.labels.template.setAll({
+                    radius: 10,
+                    fill: am5.color("#fff"),
+                });
+
+                xRenderer.grid.template.setAll({
+                    forceHidden: true
+                });
+
+                var xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, {
+                    renderer: xRenderer,
+                    min: 0,
+                    max: 100,
+                    strictMinMax: true,
+                    numberFormat: "#'%'",
+                    tooltip: am5.Tooltip.new(root, {})
+                }));
+
+                var yRenderer = am5radar.AxisRendererRadial.new(root, {
+                    minGridDistance: 20
+                });
+
+                yRenderer.labels.template.setAll({
+                    centerX: am5.p100,
+                    fontWeight: "400",
+                    fontSize: 15,
+                    templateField: "columnSettings",
+                    fill: am5.color("#fff"),
+                });
+
+                yRenderer.grid.template.setAll({
+                    forceHidden: true
+                });
+
+                var yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {
+                    categoryField: "category",
+                    renderer: yRenderer
+                }));
+
+                yAxis.data.setAll(data);
+
+                var series1 = chart.series.push(am5radar.RadarColumnSeries.new(root, {
+                    xAxis: xAxis,
+                    yAxis: yAxis,
+                    clustered: false,
+                    valueXField: "full",
+                    categoryYField: "category",
+                    fill: root.interfaceColors.get("alternativeBackground")
+                }));
+
+                series1.columns.template.setAll({
+                    width: am5.p100,
+                    fillOpacity: 0.08,
+                    strokeOpacity: 0,
+                    cornerRadius: 20
+                });
+
+                series1.data.setAll(data);
+
+                var series2 = chart.series.push(am5radar.RadarColumnSeries.new(root, {
+                    xAxis: xAxis,
+                    yAxis: yAxis,
+                    clustered: false,
+                    valueXField: "value",
+                    categoryYField: "category"
+                }));
+
+                series2.columns.template.setAll({
+                    width: am5.p100,
+                    strokeOpacity: 0,
+                    tooltipText: "{category}: {valueX}%",
+                    cornerRadius: 20,
+                    templateField: "columnSettings"
+                });
+
+                series2.data.setAll(data);
+
+                series1.appear(1000);
+                series2.appear(1000);
+                chart.appear(1000, 100);
+
+            });
+        },
 
     },
-    created() {
+    mounted() {
         this.getTopArtist();
     },
 };
@@ -468,9 +629,19 @@ export default {
     height: 500px;
 }
 
+#chartdiv_5 {
+    width: 100%;
+    height: 500px;
+}
+
+#chartdiv_6 {
+    width: 100%;
+    height: 500px;
+}
+
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity .5s
+    transition: opacity .9s
 }
 
 .fade-enter,

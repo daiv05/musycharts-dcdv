@@ -1,6 +1,5 @@
 import './assets/main.css'
 import axios from 'axios';
-
 import { createApp } from 'vue'
 
 import App from './App.vue'
@@ -13,6 +12,7 @@ axios.interceptors.response.use(
         if (error.response.status === 401) {
             console.log('no auth');
             localStorage.removeItem('access_token');
+            localStorage.removeItem('code_verifier');
             swal({
                 title: "Error",
                 text: "Token de acceso expirado. Por favor, vuelve a iniciar sesión.",

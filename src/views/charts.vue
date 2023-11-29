@@ -5,22 +5,25 @@
             <img src="../assets/img/arrow-left.svg" alt="Regresar" class="h-6 w-6 mr-1"> Regresar
         </a>
     </div>
-
     <div class="grid grid-cols-12 bg-gray-950 h-full">
         <!-- PERFIL LOGIN INFO -->
         <div class="col-span-3 md:col-span-2 items-start justify-center">
             <div v-if="perfil != null" class="text-center mt-20 py-4 bg-slate-950 overflow-hidden shadow-lg">
                 <a v-if="perfil.images[0]" :href="perfil.external_urls.spotify" target="_blank">
                     <img :src="perfil.images[0].url" class="mx-auto mb-4 w-20 md:w-24" alt="Avatar" />
-                    <h5 class="mb-2 text-lg md:text-xl font-medium leading-tight">{{ perfil.display_name + ' - ' + perfil.country}} </h5>
+                    <h5 class="mb-2 text-lg md:text-xl font-medium leading-tight">{{ perfil.display_name + ' - ' +
+                        perfil.country }} </h5>
                 </a>
                 <a v-else :href="perfil.external_urls.spotify" target="_blank">
                     <img src="../assets/img/boy.png" class="mx-auto mb-4 w-20 md:w-24" alt="Avatar" />
-                    <h5 class="mb-2 text-lg md:text-xl font-medium leading-tight">{{ perfil.display_name + ' - ' + perfil.country}} </h5>
+                    <h5 class="mb-2 text-lg md:text-xl font-medium leading-tight">{{ perfil.display_name + ' - ' +
+                        perfil.country }} </h5>
                 </a>
                 <div class="mt-2">
-                    <a @click="disconnect_app()" href="#" class="font-normal text-center text-sm rounded" style="color: #651111;">
-                        <svg class="inline-block h-6 w-6 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <a @click="disconnect_app()" href="#" class="font-normal text-center text-sm rounded"
+                        style="color: #651111;">
+                        <svg class="inline-block h-6 w-6 mr-1" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                             <g id="SVGRepo_iconCarrier">
@@ -37,12 +40,17 @@
                         Cerrar sesión
                     </a>
                 </div>
+                <div class="w-auto h-auto flex justify-center">
+                    <Toggle id="toggle_id" @change="toggle()" ></Toggle>
+                    <br>
+                    <label v-if="toggle_genre" class="ml-2 text-gray-400 text-sm">Géneros</label>
+                    <label v-else class="ml-2 text-gray-400 text-sm">Canciones</label>
+                </div>
             </div>
             <div v-else class="text-center">
                 <h5 class="mb-2 text-lg md:text-xl font-medium leading-tight">Cargando...</h5>
             </div>
         </div>
-
         <!-- CARDS -->
         <div class="col-span-9 items-center justify-center mb-4 pt-8">
             <div class="grid grid-cols-12">
@@ -113,9 +121,75 @@
                     </div>
                 </div>
             </div>
-
+            <div class="grid grid-cols-12">
+                <!-- Grafico de radar -->
+                <div
+                    class="md:col-span-6 col-span-11 transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 mx-4 mb-4 pb-8 rounded overflow-hidden shadow-lg">
+                    <img class="w-full h-35 md:h-64 object-cover" src="../assets/img/radar-img.jpeg"
+                        alt="Sunset in the mountains">
+                    <div class="px-4 py-2">
+                        <div class="font-bold text-lg md:text-xl mb-2">Musyradar</div>
+                        <p class="text-sm md:text-base text-gray-400">
+                            Descubre cuales géneros son los que más escuchas y cuales son tus artistas favoritos.
+                        </p>
+                    </div>
+                    <div class="px-4 py-2">
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'radar', time_limit: 'short_term' } }"
+                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
+                            <span
+                                class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">1
+                                mes</span>
+                        </router-link>
+                        <router-link
+                            :to="{ name: 'top-genres', params: { chart_type: 'radar', time_limit: 'medium_term' } }"
+                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
+                            <span
+                                class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">6
+                                meses</span>
+                        </router-link>
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'radar', time_limit: 'long_term' } }"
+                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
+                            <span
+                                class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">de
+                                todos los tiempos</span>
+                        </router-link>
+                    </div>
+                </div>
+                <!-- Grafico gauge -->
+                <div
+                    class="md:col-span-6 col-span-11 transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 mx-4 mb-4 pb-8 rounded overflow-hidden shadow-lg">
+                    <img class="w-full h-35 md:h-64 object-cover" src="../assets/img/gauge-img.jpeg"
+                        alt="Sunset in the mountains">
+                    <div class="px-4 py-2">
+                        <div class="font-bold text-lg md:text-xl mb-2">Musygauge</div>
+                        <p class="text-sm md:text-base text-gray-400">
+                            Descubre cuales géneros son los que más escuchas y cuales son tus artistas favoritos.
+                        </p>
+                    </div>
+                    <div class="px-4 py-2">
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'gauge', time_limit: 'short_term' } }"
+                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
+                            <span
+                                class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">1
+                                mes</span>
+                        </router-link>
+                        <router-link
+                            :to="{ name: 'top-genres', params: { chart_type: 'gauge', time_limit: 'medium_term' } }"
+                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
+                            <span
+                                class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">6
+                                meses</span>
+                        </router-link>
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'gauge', time_limit: 'long_term' } }"
+                            class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
+                            <span
+                                class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">de
+                                todos los tiempos</span>
+                        </router-link>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
     <!-- Footer -->
     <footer class="bg-gray-200 py-4 mt-2 w-full">
@@ -140,7 +214,7 @@
 import axios from 'axios';
 import config from '@/config';
 import swal from 'sweetalert';
-import { svg } from 'd3';
+import Toggle from '@/components/toggle.vue';
 
 export default {
     data() {
@@ -149,10 +223,14 @@ export default {
             urlParams: new URLSearchParams(window.location.search),
             code: null,
             codeVerifier: localStorage.getItem('code_verifier'),
-            accessToken: localStorage.getItem('access_token')
+            accessToken: localStorage.getItem('access_token'),
+            toggle_genre: false,
         };
     },
-    created() {
+    components: {
+        Toggle
+    },
+    mounted() {
         this.code = this.urlParams.get('code');
         if (this.accessToken == null || this.accessToken == 'undefined') {
             this.getToken()
@@ -175,7 +253,11 @@ export default {
         }
     },
     methods: {
-        getToken() {
+        toggle(){
+            this.toggle_genre = !this.toggle_genre;
+            console.log(this.toggle_genre)
+        },
+        async getToken() {
             const body = new URLSearchParams({
                 grant_type: 'authorization_code',
                 code: this.code,
@@ -183,32 +265,30 @@ export default {
                 client_id: config.clientId,
                 code_verifier: this.codeVerifier
             });
-            return axios.post('https://accounts.spotify.com/api/token', body, {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            })
-                .then(response => {
-                    localStorage.setItem('access_token', response.data.access_token);
-                    this.accessToken = response.data.access_token;
-                })
-                .catch(error => {
-                    console.log(error);
+            try {
+                const response = await axios.post('https://accounts.spotify.com/api/token', body, {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
                 });
+                localStorage.setItem('access_token', response.data.access_token);
+                this.accessToken = response.data.access_token;
+            } catch (error) {
+                console.log(error);
+            }
         },
-        getProfile() {
-            return axios.get('https://api.spotify.com/v1/me', {
-                headers: {
-                    Authorization: 'Bearer ' + this.accessToken
-                }
-            })
-                .then(response => {
-                    this.perfil = response.data;
-                    return response;
-                })
-                .catch(error => {
-                    console.log(error);
+        async getProfile() {
+            try {
+                const response = await axios.get('https://api.spotify.com/v1/me', {
+                    headers: {
+                        Authorization: 'Bearer ' + this.accessToken
+                    }
                 });
+                this.perfil = response.data;
+                return response;
+            } catch (error) {
+                console.log(error);
+            }
         },
         disconnect_app() {
             swal({
@@ -233,6 +313,5 @@ export default {
                 });
         },
     },
-    components: { svg }
 };
 </script>
