@@ -36,32 +36,34 @@
                 <!-- -->
                 <!-- RADAR CHARTS -->
                 <!-- -->
-                <div v-if="chart_type == 'radar'" class="flex justify-center">
-                    <transition name="fade">
+                <transition name="fade">
+                    <div v-if="chart_type == 'radar'" class="flex justify-center">
                         <div id="chartdiv_5"></div>
-                    </transition>
-                </div>
+                    </div>
+                </transition>
 
                 <!-- -->
                 <!-- GAUDE CHARTS -->
                 <!-- -->
-                <div v-if="chart_type == 'gauge'" class="flex justify-center">
-                    <transition name="fade">
+                <transition name="fade">
+                    <div v-if="chart_type == 'gauge'" class="flex justify-center">
                         <div id="chartdiv_6"></div>
-                    </transition>
-                </div>
+                    </div>
+                </transition>
 
             </div>
 
             <!-- -->
             <!-- PIE TYPES -->
             <!-- -->
-            <select v-if="chart_type == 'pie'" v-model="pie_type"
-                class="bg-gray-950 text-white text-center text-sm font-semibold py-2 px-4 border border-gray-700 rounded shadow">
-                <option value="pie">pie</option>
-                <option value="radius">var radius</option>
-                <option value="gradient">grainy gradient</option>
-            </select>
+            <transition name="fade">
+                <select v-if="chart_type == 'pie'" v-model="pie_type"
+                    class="bg-gray-950 text-white text-center text-sm font-semibold py-2 px-4 border border-gray-700 rounded shadow">
+                    <option value="pie">pie</option>
+                    <option value="radius">var radius</option>
+                    <option value="gradient">grainy gradient</option>
+                </select>
+            </transition>
         </div>
 
         <!-- Lista artistas -->
@@ -97,7 +99,8 @@
                         <a :href="track.external_urls.spotify" target="_blank">
                             <div
                                 class="w-full my-2 transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 overflow-hidden">
-                                <img :src="track.album.images[0].url" style="height: 100px;" :alt="track.album.name" class="md:block">
+                                <img :src="track.album.images[0].url" style="height: 100px;" :alt="track.album.name"
+                                    class="md:block">
                                 <span class="text-sm text-black md:text-base" style="width: 100px;">
                                     <h5 class="font-bold" style="width: 100px;">{{ '#' + (index + 1) + ' ' }}</h5> {{
                                         track.name }}
@@ -544,7 +547,8 @@ export default {
                 var i = 0;
                 data_gauge.forEach((element, index) => {
                     // Obtener porcentaje respecto a los demas elementos a partir del value
-                    element.value = (sum / element.value);
+                    console.log(sum + ' / ' + element.value)
+                    element.value = Number((element.value / sum * 100).toFixed(2));
                     element.full = 100;
                     element.columnSettings = {
                         fill: chart.get("colors").getIndex(i++)
