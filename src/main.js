@@ -21,24 +21,36 @@ const getRefreshToken = async () => {
         router.push({ path: '/' });
         return;
     }
-    const url = "https://accounts.spotify.com/api/token";
-    const clientId = config.clientId;
-    const payload = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams({
-            grant_type: 'refresh_token',
-            refresh_token: refreshToken,
-            clientId: clientId
-        }),
+    console.log('trying refresh token');
+    const client = config.clientId;
+    console.log('client')
+    console.log(client);
+    const body = new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+        client_id: client
+    });
+    try{
+        const response = await axios.post('https://accounts.spotify.com/api/token', body, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        localStorage.setItem('access_token', response.data.access_token);
+        localStorage.setItem('refresh_token', response.data.refresh_token);
+        console.log('refresh token');
+    } catch (error) {
+        console.log('error del refresh token');
+        console.log(error);
+        swal({
+            title: "Error",
+            text: "Token de acceso expirado. Por favor, vuelve a iniciar sesión.",
+            icon: "error",
+            button: "OK",
+        });
+        router.push({ path: '/' });
+        return;
     }
-    const response = await axios.post(url, payload);
-
-    localStorage.setItem('access_token', response.data.access_token);
-    localStorage.setItem('refresh_token', response.data.refresh_token);
-    console.log('refresh token');
 };
 
 // Validar en cada response si el usuario esta autenticado

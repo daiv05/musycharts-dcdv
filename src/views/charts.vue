@@ -233,23 +233,10 @@ export default {
     mounted() {
         this.code = this.urlParams.get('code');
         if (this.accessToken == null || this.accessToken == 'undefined') {
-            this.getToken()
-                .then((res) => {
-                    console.log(res);
-                    return this.getProfile();
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            this.getToken();
         }
         else {
-            this.getProfile()
-                .then((resp) => {
-                    console.log('Perfil obtenido');
-                    console.log(resp);
-                }).catch((error) => {
-                    console.log(error);
-                });
+            this.getProfile();
         }
     },
     methods: {
@@ -272,8 +259,10 @@ export default {
                     }
                 });
                 localStorage.setItem('access_token', response.data.access_token);
+                localStorage.setItem('refresh_token', response.data.refresh_token);
                 this.accessToken = response.data.access_token;
                 console.log(response.data);
+                this.getProfile();
             } catch (error) {
                 console.log(error);
             }
@@ -286,7 +275,6 @@ export default {
                     }
                 });
                 this.perfil = response.data;
-                return response;
             } catch (error) {
                 console.log(error);
             }
