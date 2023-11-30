@@ -273,6 +273,7 @@ export default {
                 });
                 localStorage.setItem('access_token', response.data.access_token);
                 this.accessToken = response.data.access_token;
+                console.log(response.data);
             } catch (error) {
                 console.log(error);
             }
