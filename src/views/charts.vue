@@ -40,11 +40,12 @@
                         Cerrar sesión
                     </a>
                 </div>
-                <div class="w-auto h-auto flex justify-center">
-                    <Toggle id="toggle_id" @change="toggle()" ></Toggle>
-                    <br>
-                    <label v-if="toggle_genre" class="ml-2 text-gray-400 text-sm">Géneros</label>
-                    <label v-else class="ml-2 text-gray-400 text-sm">Canciones</label>
+                <div class="w-auto h-auto flex justify-center row">
+                    <Toggle @change="toggle()" />
+                </div>
+                <div class="w-auto h-auto flex justify-center row">
+                    <span v-if="toggle_genre" class="ml-2 text-gray-400 text-sm">Canciones</span>
+                    <span v-else class="ml-2 text-gray-400 text-sm">Artistas</span>
                 </div>
             </div>
             <div v-else class="text-center">
@@ -66,19 +67,19 @@
                         </p>
                     </div>
                     <div class="px-4 py-2">
-                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'pie', time_limit: 'short_term' } }"
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'pie', time_limit: 'short_term', is_track: toggle_genre } }"
                             class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                             <span
                                 class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">1
                                 mes</span>
                         </router-link>
-                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'pie', time_limit: 'medium_term' } }"
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'pie', time_limit: 'medium_term', is_track: toggle_genre } }"
                             class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                             <span
                                 class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">6
                                 meses</span>
                         </router-link>
-                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'pie', time_limit: 'long_term' } }"
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'pie', time_limit: 'long_term', is_track: toggle_genre } }"
                             class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                             <span
                                 class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">de
@@ -99,20 +100,20 @@
                     </div>
                     <div class="px-4 py-2">
                         <router-link
-                            :to="{ name: 'top-genres', params: { chart_type: 'bubble', time_limit: 'short_term' } }"
+                            :to="{ name: 'top-genres', params: { chart_type: 'bubble', time_limit: 'short_term', is_track: toggle_genre } }"
                             class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                             <span
                                 class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">1
                                 mes</span>
                         </router-link>
                         <router-link
-                            :to="{ name: 'top-genres', params: { chart_type: 'bubble', time_limit: 'medium_term' } }"
+                            :to="{ name: 'top-genres', params: { chart_type: 'bubble', time_limit: 'medium_term', is_track: toggle_genre } }"
                             class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                             <span
                                 class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">6
                                 meses</span>
                         </router-link>
-                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'bubble', time_limit: 'long_term' } }"
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'bubble', time_limit: 'long_term', is_track: toggle_genre } }"
                             class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                             <span
                                 class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">de
@@ -134,20 +135,20 @@
                         </p>
                     </div>
                     <div class="px-4 py-2">
-                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'radar', time_limit: 'short_term' } }"
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'radar', time_limit: 'short_term', is_track: toggle_genre } }"
                             class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                             <span
                                 class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">1
                                 mes</span>
                         </router-link>
                         <router-link
-                            :to="{ name: 'top-genres', params: { chart_type: 'radar', time_limit: 'medium_term' } }"
+                            :to="{ name: 'top-genres', params: { chart_type: 'radar', time_limit: 'medium_term', is_track: toggle_genre } }"
                             class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                             <span
                                 class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">6
                                 meses</span>
                         </router-link>
-                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'radar', time_limit: 'long_term' } }"
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'radar', time_limit: 'long_term', is_track: toggle_genre } }"
                             class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                             <span
                                 class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">de
@@ -167,20 +168,20 @@
                         </p>
                     </div>
                     <div class="px-4 py-2">
-                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'gauge', time_limit: 'short_term' } }"
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'gauge', time_limit: 'short_term', is_track: toggle_genre } }"
                             class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                             <span
                                 class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">1
                                 mes</span>
                         </router-link>
                         <router-link
-                            :to="{ name: 'top-genres', params: { chart_type: 'gauge', time_limit: 'medium_term' } }"
+                            :to="{ name: 'top-genres', params: { chart_type: 'gauge', time_limit: 'medium_term', is_track: toggle_genre } }"
                             class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                             <span
                                 class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">6
                                 meses</span>
                         </router-link>
-                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'gauge', time_limit: 'long_term' } }"
+                        <router-link :to="{ name: 'top-genres', params: { chart_type: 'gauge', time_limit: 'long_term', is_track: toggle_genre } }"
                             class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ...">
                             <span
                                 class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700 mr-2 mb-2">de
@@ -224,7 +225,7 @@ export default {
             code: null,
             codeVerifier: localStorage.getItem('code_verifier'),
             accessToken: localStorage.getItem('access_token'),
-            toggle_genre: false,
+            toggle_genre: 1,
         };
     },
     components: {
@@ -240,8 +241,8 @@ export default {
         }
     },
     methods: {
-        toggle(){
-            this.toggle_genre = !this.toggle_genre;
+        toggle() {
+            this.toggle_genre = this.toggle_genre == 1 ? 0 : 1;
             console.log(this.toggle_genre)
         },
         async getToken() {

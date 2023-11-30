@@ -65,7 +65,7 @@
         </div>
 
         <!-- Lista artistas -->
-        <transition v-if="is_track == 0" name="fade">
+        <transition name="fade">
             <div v-if="artist_info10 != null" class="md:w-1/2 md:ml-4 pt-4 md:mt-4 pl-8 bg bg-gray-200">
                 <img src="../assets/img/logo_spotify.png" alt="logo_spotify" class="w-32 -ml-2 items-start m-8">
                 <div class="flex flex-wrap grid-cols-6">
@@ -77,30 +77,6 @@
                                 <span class="text-sm text-black md:text-base" style="width: 100px;">
                                     <h5 class="font-bold" style="width: 100px;">{{ '#' + (index + 1) + ' ' }}</h5> {{
                                         artist.name }}
-                                </span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div v-else>
-                <h2>Cargando...</h2>
-            </div>
-        </transition>
-
-        <!-- Lista tracks -->
-        <transition v-if="is_track == 1" name="fade">
-            <div v-if="tracksData10 != null" class="md:w-1/2 md:ml-4 pt-4 md:mt-4 pl-8 bg bg-gray-200">
-                <img src="../assets/img/logo_spotify.png" alt="logo_spotify" class="w-32 -ml-2 items-start m-8">
-                <div class="flex flex-wrap grid-cols-6">
-                    <div v-for="(track, index) in tracksData10" :key="track.id" class="md:w-1/2 px-2">
-                        <a :href="track.external_urls.spotify" target="_blank">
-                            <div
-                                class="w-full my-2 transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 overflow-hidden">
-                                <img :src="track.album.images[0].url" style="height: 100px;" :alt="track.album.name" class="md:block">
-                                <span class="text-sm text-black md:text-base" style="width: 100px;">
-                                    <h5 class="font-bold" style="width: 100px;">{{ '#' + (index + 1) + ' ' }}</h5> {{
-                                        track.name }}
                                 </span>
                             </div>
                         </a>
@@ -145,7 +121,7 @@ import am5themes_Material from '@amcharts/amcharts5/themes/Material';
 import am5themes_Responsive from '@amcharts/amcharts5/themes/Responsive';
 
 export default {
-    props: ['chart_type', 'time_limit', 'is_track'],
+    props: ['chart_type', 'time_limit'],
     data() {
         return {
             pie_type: 'pie',
@@ -155,8 +131,6 @@ export default {
             artist_info: null,
             artist_info10: null,
             accessToken: localStorage.getItem('access_token'),
-            tracksData: null,
-            tracksData10: null,
         };
     },
     methods: {
@@ -171,19 +145,16 @@ export default {
             for (const genre in genreCounts) {
                 genreData.push([genre, genreCounts[genre]]);
             }
-            // Ordenar array de mayor a menor
-            genreData.sort(function (a, b) {
-                return b[1] - a[1];
-            });
+            // Ordenar por cantidad de reproducciones
+            genreData.sort((a, b) => b[1] - a[1]);
             // Hacer una copia de los datos
             if (genreData.length > 10) {
-                this.genreData10 = genreData.slice(0, 9);
+                this.genreData10 = genreData.slice(0, 10);
             } else {
                 this.genreData10 = genreData;
             }
-            // // Aleatorizar orden de los datos
-            // this.genreData = genreData.sort(() => Math.random() - 0.5);
-            this.genreData = genreData;
+            // Aleatorizar orden de los datos
+            this.genreData = genreData.sort(() => Math.random() - 0.5);
             const data_chart = [
                 { value: this.genreData[0][1], category: this.genreData[0][0] },
                 { value: this.genreData[1][1], category: this.genreData[1][0] },
@@ -195,6 +166,7 @@ export default {
                 { value: this.genreData[7][1], category: this.genreData[7][0] },
                 { value: this.genreData[8][1], category: this.genreData[8][0] },
                 { value: this.genreData[9][1], category: this.genreData[9][0] },
+                { value: this.genreData[10][1], category: this.genreData[10][0] },
             ];
             if (this.chart_type == 'bubble') {
                 this.am5_bubble_v1(data_chart);
@@ -226,28 +198,6 @@ export default {
                 }
                 this.generateGenreData(topArtists);
                 console.log(topArtists);
-            } catch (error) {
-                console.log('error en getTopArtist');
-                console.log(error);
-            }
-        },
-        async getTopTracks() {
-            this.tracksData = null;
-            const headers = {
-                Authorization: 'Bearer ' + this.accessToken
-            };
-            try {
-                const response = await axios.get('https://api.spotify.com/v1/me/top/tracks?time_range=' + this.time_limit, { headers });
-                const topTracks = response.data.items;
-                // Hacer una copia de los datos
-                if (topTracks.length > 10) {
-                    this.tracksData10 = topTracks.slice(0, 10);
-                    console.log('top tracks > 10');
-                } else {
-                    this.tracksData10 = topTracks;
-                    console.log('top tracks < 10');
-                }
-                console.log(topTracks);
             } catch (error) {
                 console.log('error en getTopTracks');
                 console.log(error);
@@ -653,7 +603,6 @@ export default {
     },
     mounted() {
         this.getTopArtist();
-        this.getTopTracks();
     },
 };
 

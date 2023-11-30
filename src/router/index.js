@@ -17,7 +17,7 @@ const router = createRouter({
       component: charts
     },
     {
-      path: '/top-genres/:chart_type/:time_limit',
+      path: '/top-genres/:chart_type/:time_limit/tracks=:is_track',
       name: 'top-genres',
       component: topGenres,
       props: true

@@ -51,7 +51,7 @@ label {
     height: 40px;
     position: relative;
     display: block;
-    background: #c8c8c8;
+    background: rgb(0, 84, 4);
     border-radius: 40px;
     box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.4), inset 0px -5px 15px rgba(255, 255, 255, 0.4);
     cursor: pointer;
@@ -65,7 +65,7 @@ label:after {
     position: absolute;
     top: 2px;
     left: 2px;
-    background: linear-gradient(180deg, #ffcc89, #d8860b);
+    background: linear-gradient(180deg, #66c267, #045d0f);
     border-radius: 36px;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
