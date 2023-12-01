@@ -63,7 +63,7 @@
                     <div class="px-4 py-2">
                         <div class="font-bold text-lg md:text-xl mb-2">Musypie</div>
                         <p class="text-sm md:text-base text-gray-400">
-                            Descubre cuales géneros son los que más escuchas y cuales son tus artistas favoritos.
+                            Descubre cuales géneros son los que más escuchas y cuales son tus {{toggle_genre ? 'canciones favoritas' : 'artistas favoritos'}}.
                         </p>
                     </div>
                     <div class="px-4 py-2">
@@ -98,7 +98,7 @@
                     <div class="px-4 py-2">
                         <div class="font-bold text-lg md:text-xl mb-2">Musybubble</div>
                         <p class="text-sm md:text-base text-gray-400">
-                            Descubre cuales géneros son los que más escuchas y cuales son tus artistas favoritos.
+                            Descubre cuales géneros son los que más escuchas y cuales son tus {{toggle_genre ? 'canciones favoritas' : 'artistas favoritos'}}.
                         </p>
                     </div>
                     <div class="px-4 py-2">
@@ -135,7 +135,7 @@
                     <div class="px-4 py-2">
                         <div class="font-bold text-lg md:text-xl mb-2">Musyradar</div>
                         <p class="text-sm md:text-base text-gray-400">
-                            Descubre cuales géneros son los que más escuchas y cuales son tus artistas favoritos.
+                            Descubre cuales géneros son los que más escuchas y cuales son tus {{toggle_genre ? 'canciones favoritas' : 'artistas favoritos'}}.
                         </p>
                     </div>
                     <div class="px-4 py-2">
@@ -170,7 +170,7 @@
                     <div class="px-4 py-2">
                         <div class="font-bold text-lg md:text-xl mb-2">Musygauge</div>
                         <p class="text-sm md:text-base text-gray-400">
-                            Descubre cuales géneros son los que más escuchas y cuales son tus artistas favoritos.
+                            Descubre cuales géneros son los que más escuchas y cuales son tus {{toggle_genre ? 'canciones favoritas' : 'artistas favoritos'}}.
                         </p>
                     </div>
                     <div class="px-4 py-2">
