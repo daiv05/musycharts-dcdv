@@ -34,7 +34,7 @@ Si tienes alguna recomendación sobre que te gustaría que se agregara, puedes c
 
 ## Licencia
 
-Puedes copiar lo que quieras de este código :D
+[MIT](https://choosealicense.com/licenses/mit/)
 
 ## Hecho en El Salvador
 <img  src="https://musycharts-dcdv.vercel.app/assets/musylogo22-220e9f8e.png" width="300">
