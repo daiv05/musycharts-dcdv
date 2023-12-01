@@ -23,43 +23,29 @@ axios.interceptors.response.use(
                     icon: "error",
                     button: "OK",
                 });
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                localStorage.removeItem('code');
                 router.push({ path: '/' });
                 return;
             }
             console.log('trying refresh token');
             const client = config.clientId;
-            console.log('client')
-            console.log(client);
             const body = new URLSearchParams({
                 grant_type: 'refresh_token',
                 refresh_token: refreshToken,
                 client_id: client
             });
-            try {
-                axios.post('https://accounts.spotify.com/api/token', body, {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    }
-                }).then(response => {
-                    console.log('refresh token response');
-                    console.log(response.data);
-                    localStorage.setItem('access_token', response.data.access_token);
-                    localStorage.setItem('refresh_token', response.data.refresh_token);
-                    console.log('refresh token');
-                }).catch(error => {
-                    console.log('error del refresh token');
-                    console.log(error);
-                    swal({
-                        title: "Error",
-                        text: "Token de acceso expirado. Por favor, vuelve a iniciar sesión.",
-                        icon: "error",
-                        button: "OK",
-                    });
-                    router.push({ path: '/' });
-                    return Promise.reject(error);
-                });
-            } catch (error) {
-                console.log('error del refresh token');
+            axios.post('https://accounts.spotify.com/api/token', body, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(response => {
+                localStorage.setItem('access_token', response.data.access_token);
+                localStorage.setItem('refresh_token', response.data.refresh_token);
+                console.log('refreshed token');
+            }).catch(error => {
+                console.log('error refresh token');
                 console.log(error);
                 swal({
                     title: "Error",
@@ -67,9 +53,12 @@ axios.interceptors.response.use(
                     icon: "error",
                     button: "OK",
                 });
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                localStorage.removeItem('code');
                 router.push({ path: '/' });
                 return Promise.reject(error);
-            }
+            });
         }
         return Promise.reject(error);
     }
