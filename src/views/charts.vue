@@ -41,7 +41,7 @@
                     </a>
                 </div>
                 <div class="w-auto h-auto flex justify-center row">
-                    <Toggle @change="toggle()" />
+                    <Toggle @change="change_toggle()"/>
                 </div>
                 <div class="w-auto h-auto flex justify-center row">
                     <span v-if="toggle_genre" class="ml-2 text-gray-400 text-sm">Canciones</span>
@@ -225,25 +225,33 @@ export default {
             code: null,
             codeVerifier: localStorage.getItem('code_verifier'),
             accessToken: localStorage.getItem('access_token'),
-            toggle_genre: 1,
+            toggle_genre: Number(localStorage.getItem('toggle_genre') == 1 ? 1 : 0),
         };
     },
     components: {
         Toggle
     },
-    mounted() {
+    created() {
         this.code = this.urlParams.get('code');
+        if (this.code == null || this.code == 'undefined') {
+            swal({
+                    title: "Error",
+                    text: "Error de autorización. Por favor, vuelve a iniciar sesión.",
+                    icon: "error",
+                    button: "OK",
+                });
+            localStorage.removeItem('access_token');
+            this.$router.push({ path: '/' });
+        }
         if (this.accessToken == null || this.accessToken == 'undefined') {
             this.getToken();
-        }
-        else {
+        } else {
             this.getProfile();
         }
     },
     methods: {
-        toggle() {
-            this.toggle_genre = this.toggle_genre == 1 ? 0 : 1;
-            console.log(this.toggle_genre)
+        change_toggle() {
+            this.toggle_genre = Number(localStorage.getItem('toggle_genre'))
         },
         async getToken() {
             const body = new URLSearchParams({

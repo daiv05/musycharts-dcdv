@@ -36,14 +36,28 @@ axios.interceptors.response.use(
                 client_id: client
             });
             try {
-                const response = axios.post('https://accounts.spotify.com/api/token', body, {
+                axios.post('https://accounts.spotify.com/api/token', body, {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
+                }).then(response => {
+                    console.log('refresh token response');
+                    console.log(response.data);
+                    localStorage.setItem('access_token', response.data.access_token);
+                    localStorage.setItem('refresh_token', response.data.refresh_token);
+                    console.log('refresh token');
+                }).catch(error => {
+                    console.log('error del refresh token');
+                    console.log(error);
+                    swal({
+                        title: "Error",
+                        text: "Token de acceso expirado. Por favor, vuelve a iniciar sesión.",
+                        icon: "error",
+                        button: "OK",
+                    });
+                    router.push({ path: '/' });
+                    return Promise.reject(error);
                 });
-                localStorage.setItem('access_token', response.data.access_token);
-                localStorage.setItem('refresh_token', response.data.refresh_token);
-                console.log('refresh token');
             } catch (error) {
                 console.log('error del refresh token');
                 console.log(error);

@@ -1,6 +1,6 @@
 <template>
     <div class="w-auto h-autoflex justify-center">
-        <input type="checkbox" id="darkmode-toggle" />
+        <input @change="toggle_check()" type="checkbox" id="darkmode-toggle" />
         <label for="darkmode-toggle">
             <svg version="1.1" class="sun" style="enable-background:new 0 0 496 496;" id="_x32_"
                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"
@@ -41,6 +41,26 @@
 <script>
 export default {
     name: 'Toggle',
+    data() {
+        return {
+            check: 0,
+        }
+    },
+    created() {
+        this.check = Number(localStorage.getItem('toggle_genre') == undefined ? 0 : localStorage.getItem('toggle_genre'))
+        localStorage.setItem('toggle_genre', this.check)
+    },
+    mounted() {
+        document.getElementById('darkmode-toggle').checked = this.check == 1 ? true : false
+    },
+    methods: {
+        toggle_check() {
+            this.check = Number(localStorage.getItem('toggle_genre') == 1 ? 0 : 1)
+            localStorage.setItem('toggle_genre', this.check)
+            console.log('toggle')
+            console.log(this.check)
+        }
+    }
 };
 
 </script>
@@ -51,7 +71,7 @@ label {
     height: 40px;
     position: relative;
     display: block;
-    background: rgb(0, 84, 4);
+    background: rgb(0, 47, 2);
     border-radius: 40px;
     box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.4), inset 0px -5px 15px rgba(255, 255, 255, 0.4);
     cursor: pointer;
@@ -65,7 +85,7 @@ label:after {
     position: absolute;
     top: 2px;
     left: 2px;
-    background: linear-gradient(180deg, #66c267, #045d0f);
+    background: linear-gradient(180deg, #458e46, #004d09);
     border-radius: 36px;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
