@@ -1,18 +1,31 @@
 <template>
-  <div class="inline-flex bg-[#2a2a2a] rounded-lg p-[3px] gap-[2px]" role="group">
+  <div class="relative inline-flex p-1.5 bg-[#121212]/80 backdrop-blur-xl rounded-full shadow-[inset_0_4px_6px_rgba(0,0,0,0.5)] border border-white/10" role="group">
+    <!-- Animated Background -->
+    <div 
+      class="absolute top-1.5 bottom-1.5 left-1.5 rounded-full transition-transform duration-500 ease-[cubic-bezier(0.68,-0.55,0.26,1.55)]"
+      :style="{ width: 'calc(50% - 6px)', transform: modelValue === 0 ? 'translateX(0)' : 'translateX(100%)' }"
+    >
+      <div 
+        class="w-full h-full rounded-full transition-colors duration-500"
+        :class="modelValue === 0 
+          ? 'bg-linear-to-r from-emerald-500 via-green-500 to-green-400' 
+          : 'bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500'"
+      ></div>
+    </div>
+
     <button
-      class="px-4 py-1.5 text-xs font-semibold border-none rounded-md bg-transparent text-text-secondary cursor-pointer transition-colors hover:text-text-primary [&.active]:bg-bg-surface [&.active]:text-text-primary"
-      :class="{ active: modelValue === 0 }"
+      class="relative z-10 w-[80px] sm:w-[80px] py-2.5 text-[11px] sm:text-xs font-bold tracking-widest sm:tracking-[0.15em] border-none rounded-full transition-all duration-300 bg-transparent cursor-pointer outline-none flex items-center justify-center gap-2"
+      :class="modelValue === 0 ? 'text-white scale-[1.02]' : 'text-gray-400 hover:text-gray-200'"
       @click="$emit('update:modelValue', 0)"
     >
-      {{ t('dashboard.toggleArtists') }}
+      <span class="truncate">{{ t('dashboard.toggleArtists') }}</span>
     </button>
     <button
-      class="px-4 py-1.5 text-xs font-semibold border-none rounded-md bg-transparent text-text-secondary cursor-pointer transition-colors hover:text-text-primary [&.active]:bg-bg-surface [&.active]:text-text-primary"
-      :class="{ active: modelValue === 1 }"
+      class="relative z-10 w-[80px] sm:w-[80px] py-2.5 text-[11px] sm:text-xs font-bold tracking-widest sm:tracking-[0.15em] border-none rounded-full transition-all duration-300 bg-transparent cursor-pointer outline-none flex items-center justify-center gap-2"
+      :class="modelValue === 1 ? 'text-white scale-[1.02]' : 'text-gray-400 hover:text-gray-200'"
       @click="$emit('update:modelValue', 1)"
     >
-      {{ t('dashboard.toggleTracks') }}
+      <span class="truncate">{{ t('dashboard.toggleTracks') }}</span>
     </button>
   </div>
 </template>

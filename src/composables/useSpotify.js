@@ -10,10 +10,9 @@ import { useAuth } from './useAuth.js'
 
 const BASE = 'https://api.spotify.com/v1'
 
-// Module-level cache (persists across component instances)
 const _profile = ref(null)
-const _topArtists = ref({}) // keyed by time_range
-const _topTracks = ref({})  // keyed by time_range
+const _topArtists = ref({})
+const _topTracks = ref({})
 
 export function useSpotify() {
   const auth = useAuth()

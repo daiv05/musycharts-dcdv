@@ -13,8 +13,6 @@ const SCOPES = 'user-read-private user-read-email user-top-read'
 const TOKEN_URL = 'https://accounts.spotify.com/api/token'
 const AUTH_URL = 'https://accounts.spotify.com/authorize'
 
-// ── helpers ──────────────────────────────────────────────────────────────────
-
 function generateRandomString(length) {
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   const values = crypto.getRandomValues(new Uint8Array(length))
@@ -37,8 +35,6 @@ function base64urlEncode(buffer) {
 async function generateCodeChallenge(verifier) {
   return base64urlEncode(await sha256(verifier))
 }
-
-// ── composable ───────────────────────────────────────────────────────────────
 
 const _accessToken = ref(localStorage.getItem('access_token') || null)
 const _refreshToken = ref(localStorage.getItem('refresh_token') || null)
@@ -82,7 +78,6 @@ export function useAuth() {
     const storedState = sessionStorage.getItem('oauth_state')
     const codeVerifier = sessionStorage.getItem('pkce_code_verifier')
 
-    // Validate state (CSRF protection)
     if (!returnedState || returnedState !== storedState) {
       clearSession()
       return { ok: false, reason: 'state_mismatch' }
@@ -111,7 +106,6 @@ export function useAuth() {
       localStorage.setItem('access_token', data.access_token)
       localStorage.setItem('refresh_token', data.refresh_token)
 
-      // Clean up sessionStorage
       sessionStorage.removeItem('pkce_code_verifier')
       sessionStorage.removeItem('oauth_state')
 

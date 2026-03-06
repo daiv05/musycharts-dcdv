@@ -190,7 +190,6 @@ const themeBgHex = computed(() => {
   return '#0f0f0f'
 })
 
-// Custom bar color cycle for the top genres graph inside export
 function getBarColor(index, th) {
   const customColors = ['bg-primary', 'bg-secondary', 'bg-tertiary']
   if (th === 'spotify') {

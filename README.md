@@ -30,7 +30,7 @@ Como parte de la configuración se creo un archivo `vercel.json` para manejar co
 
 ## Feedback
 
-Si tienes alguna recomendación sobre que te gustaría que se agregara, puedes contactar al correo: davidderas50@gmail.com
+Si tienes alguna recomendación sobre que te gustaría que se agregara, puedes contactar al correo: david@deras.dev
 
 ## Licencia
 

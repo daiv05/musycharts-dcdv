@@ -6,7 +6,6 @@ import i18n from './i18n'
 import axios from 'axios'
 import { useAuth } from './composables/useAuth.js'
 
-// ── Axios interceptor: retry once with refreshed token on 401 ────────────────
 let isRefreshing = false
 let failedQueue = []
 
@@ -25,7 +24,6 @@ axios.interceptors.response.use(
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
-        // Queue requests that come in while refresh is in progress
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject })
         }).then(token => {
@@ -58,7 +56,6 @@ axios.interceptors.response.use(
   }
 )
 
-// ── App bootstrap ─────────────────────────────────────────────────────────────
 const app = createApp(App)
 app.use(router)
 app.use(i18n)

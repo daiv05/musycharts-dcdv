@@ -8,7 +8,7 @@
         <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        {{ t('nav.back') }}
+        <!-- {{ t('nav.back') }} -->
       </button>
 
       <div class="flex flex-col items-center text-center flex-1 min-w-0">
@@ -87,7 +87,7 @@
                    height: `${Math.max(60, (g[1] / genreData10[0][1]) * 180)}px`,
                    fontSize: `${Math.max(0.6, (g[1] / genreData10[0][1]) * 1.5)}rem` 
                  }">
-              <span class="px-2 break-words leading-tight uppercase">{{ g[0] }}</span>
+              <span class="px-2 wrap-break-words leading-tight uppercase">{{ g[0] }}</span>
             </div>
           </div>
           
@@ -197,6 +197,9 @@
       @close="showExport = false"
     />
 
+    <!-- Footer -->
+    <AppFooter class="hidden md:flex" />
+
     <!-- Bottom nav (mobile) -->
     <BottomNav />
   </div>
@@ -210,15 +213,14 @@ import { useSpotify } from '@/composables/useSpotify.js'
 import NavBar from '@/components/NavBar.vue'
 import BottomNav from '@/components/BottomNav.vue'
 import ExportCard from '@/components/ExportCard.vue'
+import AppFooter from '@/components/AppFooter.vue'
 
-// ── Props ──────────────────────────────────────────────────────────────────
 const props = defineProps({
   chart_type: { type: String, required: true },
   time_limit: { type: String, required: true },
   is_track:   { type: [String, Number], default: 0 },
 })
 
-// ── State ──────────────────────────────────────────────────────────────────
 const { t } = useI18n()
 const spotify = useSpotify()
 
@@ -242,13 +244,11 @@ function getChartColorClass(i) {
   return tailwindColors[i % tailwindColors.length]
 }
 
-// ── Data loading ──────────────────────────────────────────────────────────
 onMounted(async () => {
   try {
     profile.value = await spotify.getProfile()
     const artists = await spotify.getTopArtists(props.time_limit, 20)
 
-    // Build genre data
     const counts = {}
     artists.forEach(a => a.genres.forEach(g => { counts[g] = (counts[g] || 0) + 1 }))
     let sorted = Object.entries(counts).map(([k, v]) => [k, v])
@@ -257,7 +257,6 @@ onMounted(async () => {
 
     artist_info10.value = artists.slice(0, 10)
 
-    // Load tracks
     const tracks = await spotify.getTopTracks(props.time_limit, 10)
     tracksData10.value = tracks.slice(0, 10)
   } finally {

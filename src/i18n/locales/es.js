@@ -27,20 +27,20 @@ export default {
     toggleArtists: 'Artistas',
     toggleTracks: 'Canciones',
     pie: {
-      name: 'Musypie',
-      desc: 'Vista de géneros y {type} favoritos en gráfico de pastel.',
+      name: 'The Pinnacle',
+      desc: 'Tus {type} top y los géneros que dominan tu panorama auditivo.',
     },
     bubble: {
-      name: 'Musybubble',
-      desc: 'Tus géneros más escuchados en un mapa de burbujas.',
+      name: 'The Cluster',
+      desc: 'Una red clusterizada de los géneros que definen tus {type}.',
     },
     radar: {
-      name: 'Musyradar',
-      desc: 'Distribución de géneros en formato radar.',
+      name: 'The Stack',
+      desc: 'Una distribución apilada de los géneros en tus {type}.',
     },
     gauge: {
-      name: 'Musygauge',
-      desc: 'Proporciones de géneros en barras circulares.',
+      name: 'The Scale',
+      desc: 'Un espectro a escala de las proporciones de géneros en tus {type}.',
     },
     period: {
       short: '1 mes',
