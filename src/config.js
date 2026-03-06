@@ -1,5 +1,4 @@
 export default {
-    clientId: '00ca8f7030ed423789e8b3b52cea46e7',
-    my_url: 'http://127.0.0.1:5173'
-    // my_url: 'https://musycharts-dcdv.vercel.app'
-};
+  clientId: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
+  my_url: import.meta.env.VITE_APP_URL ?? 'http://127.0.0.1:5173',
+}

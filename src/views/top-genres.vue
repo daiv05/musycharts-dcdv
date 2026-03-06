@@ -1,709 +1,277 @@
 <template>
-    <!-- Regresar a la pagina anterior -->
-    <div class="flex bg-gray-950 justify-left items-center space-x-4">
-        <a @click="$router.go(-1)" href="#" class="mr-4 flex items-center">
-            <img src="../assets/img/arrow-left.svg" alt="Regresar" class="h-6 w-6 mr-1"> Regresar
-        </a>
+  <div class="flex flex-col min-h-screen bg-bg-base">
+    <NavBar />
+
+    <!-- Top bar -->
+    <div class="flex items-center justify-between p-2.5 px-4 border-b border-bg-surface gap-2">
+      <button class="flex items-center gap-1.5 bg-transparent border-none text-text-secondary text-sm cursor-pointer whitespace-nowrap py-1 transition-colors hover:text-text-primary" @click="$router.go(-1)">
+        <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        {{ t('nav.back') }}
+      </button>
+
+      <div class="flex flex-col items-center text-center flex-1 min-w-0">
+        <span class="text-[0.9rem] font-bold text-text-primary">{{ isTrack == 1 ? t('detail.topTracks') : t('detail.topGenres') }}</span>
+        <span class="text-[0.7rem] text-text-secondary">{{ t(`export.period.${time_limit}`) }}</span>
+      </div>
+
+      <button class="flex items-center gap-[5px] bg-transparent border border-border-subtle text-text-secondary text-[0.75rem] py-1 px-2.5 rounded-lg cursor-pointer whitespace-nowrap transition-colors hover:text-text-primary hover:border-text-mute" @click="showExport = true">
+        <svg class="w-[15px] h-[15px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        {{ t('detail.export') }}
+      </button>
     </div>
-    <div class="md:flex bg-gray-950 items-center h-full">
-        <!-- Grafico -->
-        <div class="text-center md:w-1/2 pt-8 pb-8">
+
+    <!-- Main layout: chart + list -->
+    <div class="flex flex-col md:flex-row flex-1 pb-20 md:pb-0">
+      
+      <!-- Custom DOM Charts Area (No amCharts) -->
+      <section class="p-6 flex flex-col items-center justify-center gap-6 md:flex-1 w-full mx-auto overflow-hidden min-h-[400px]">
+        
+        <template v-if="!loading && genreData10 && genreData10.length > 0">
+          
+          <!-- Abstract Brutalist Typographic View (Pie replacement) -->
+          <div v-if="chart_type === 'pie'" class="flex flex-col items-center justify-center w-full h-full text-center gap-4 animate-fade-in">
+            <div class="text-[0.6rem] font-bold tracking-[0.2em] text-spotify uppercase border border-spotify px-3 py-1 rounded-full">The Pinnacle</div>
+            <h3 class="text-6xl md:text-8xl font-black text-text-primary uppercase tracking-tighter leading-none break-all">
+              {{ genreData10[0][0] }}
+            </h3>
+            <p class="text-text-secondary mt-2 max-w-sm text-sm">
+              Your auditory landscape is dominated by <strong class="text-white">{{ genreData10[0][0] }}</strong>, capturing {{ Math.round((genreData10[0][1] / genreData10.reduce((a,b)=>a+b[1],0))*100) }}% of your top genres.
+            </p>
+            <div class="flex flex-wrap justify-center gap-2 mt-4 max-w-md">
+              <span v-for="(g, i) in genreData10.slice(1, 5)" :key="g[0]" class="bg-bg-surface text-text-secondary px-3 py-1 rounded-full text-xs font-semibold">
+                #{{ i+2 }} {{ g[0] }}
+              </span>
+            </div>
+          </div>
+
+          <!-- The Stack (Radar replacement) -->
+          <div v-else-if="chart_type === 'radar'" class="flex items-end justify-center w-full h-[300px] md:h-[400px] gap-2 md:gap-4 animate-fade-in">
+            <div v-for="(g, i) in genreData10.slice(0, 7)" :key="g[0]" class="flex flex-col items-center justify-end h-full gap-2 w-10 md:w-16">
+              <span class="text-[0.65rem] text-text-mute font-bold -rotate-90 origin-bottom mb-8 whitespace-nowrap">{{ g[0] }}</span>
+              <div class="w-full bg-spotify rounded-t-sm transition-all duration-1000 ease-out"
+                   :style="{ height: `${(g[1] / genreData10[0][1]) * 100}%`, backgroundColor: getChartColor(i) }">
+              </div>
+              <span class="text-xs font-bold text-text-primary">{{ Math.round((g[1] / genreData10.reduce((a,b)=>a+b[1],0))*100) }}%</span>
+            </div>
+          </div>
+
+          <!-- The Scale (Gauge replacement) -->
+          <div v-else-if="chart_type === 'gauge'" class="flex flex-col justify-center w-full max-w-lg gap-4 animate-fade-in">
+            <div class="text-[0.6rem] font-bold tracking-[0.2em] text-text-secondary uppercase mb-2">The Spectrum</div>
+            <div v-for="(g, i) in genreData10.slice(0, 6)" :key="g[0]" class="flex flex-col gap-1 w-full">
+              <div class="flex justify-between text-sm font-bold">
+                <span class="uppercase tracking-wide text-text-primary">{{ g[0] }}</span>
+                <span class="text-text-secondary">{{ g[1] }}</span>
+              </div>
+              <div class="w-full bg-bg-surface h-6 md:h-8 rounded-sm overflow-hidden">
+                <div class="h-full transition-all duration-1000 ease-out flex items-center px-3"
+                     :class="getChartColorClass(i)"
+                     :style="{ width: `${(g[1] / genreData10[0][1]) * 100}%` }">
+                     <span class="text-[10px] text-black font-black opacity-50 block md:hidden">{{ Math.round((g[1] / genreData10.reduce((a,b)=>a+b[1],0))*100) }}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- The Cluster (Bubble replacement) -->
+          <div v-else class="flex flex-wrap items-center justify-center content-center w-full h-[300px] md:h-[400px] gap-2 md:gap-4 max-w-2xl animate-fade-in">
+            <div v-for="(g, i) in genreData10" :key="g[0]" 
+                 class="flex items-center justify-center rounded-full text-center transition-transform hover:scale-105"
+                 :class="[getChartColorClass(i), i === 0 ? 'text-black font-black' : 'text-black/80 font-bold']"
+                 :style="{ 
+                   width: `${Math.max(60, (g[1] / genreData10[0][1]) * 180)}px`, 
+                   height: `${Math.max(60, (g[1] / genreData10[0][1]) * 180)}px`,
+                   fontSize: `${Math.max(0.6, (g[1] / genreData10[0][1]) * 1.5)}rem` 
+                 }">
+              <span class="px-2 break-words leading-tight uppercase">{{ g[0] }}</span>
+            </div>
+          </div>
+          
+        </template>
+        
+        <!-- Loading UI for Charts -->
+        <div v-else class="flex flex-col gap-4 animate-pulse w-full max-w-md">
+           <div class="w-full h-8 bg-border-subtle rounded-sm"></div>
+           <div class="w-3/4 h-8 bg-border-subtle rounded-sm"></div>
+           <div class="w-5/6 h-8 bg-border-subtle rounded-sm"></div>
+        </div>
+      </section>
+
+      <!-- List area -->
+      <section class="bg-bg-soft p-4 md:w-[340px] md:shrink-0 md:border-l md:border-bg-surface overflow-y-auto md:max-h-[calc(100vh-112px)]">
+        <!-- Loading state -->
+        <div v-if="loading" class="flex flex-col gap-2">
+          <div v-for="i in 10" :key="i" class="flex gap-3 items-center">
+            <div class="w-[46px] h-[46px] rounded-md shrink-0 bg-border-subtle animate-pulse"></div>
             <div>
-                <p class="leading-6 font-bold text-xl text-center">Top Géneros</p>
-
-                <!-- -->
-                <!-- PIE CHARTS -->
-                <!-- -->
-                <div v-if="chart_type == 'pie'">
-                    <transition name="fade">
-                        <div v-show="pie_type == 'pie'" id="chartdiv_1"></div>
-                    </transition>
-                    <transition name="fade">
-                        <div v-show="pie_type == 'radius'" id="chartdiv_2"></div>
-                    </transition>
-                    <transition name="fade">
-                        <div v-show="pie_type == 'gradient'" id="chartdiv_3"></div>
-                    </transition>
-                </div>
-
-                <!-- -->
-                <!-- BUBBLE CHARTS -->
-                <!-- -->
-                <div v-if="chart_type == 'bubble'" class="flex justify-center">
-                    <div id="chartdiv_4"></div>
-                </div>
-
-                <!-- -->
-                <!-- RADAR CHARTS -->
-                <!-- -->
-                <transition name="fade">
-                    <div v-if="chart_type == 'radar'" class="flex justify-center">
-                        <div id="chartdiv_5"></div>
-                    </div>
-                </transition>
-
-                <!-- -->
-                <!-- GAUDE CHARTS -->
-                <!-- -->
-                <transition name="fade">
-                    <div v-if="chart_type == 'gauge'" class="flex justify-center">
-                        <div id="chartdiv_6"></div>
-                    </div>
-                </transition>
-
+              <div class="h-[13px] w-[140px] mb-1.5 rounded bg-border-subtle animate-pulse"></div>
+              <div class="h-[11px] w-[90px] rounded bg-border-subtle animate-pulse"></div>
             </div>
-
-            <!-- -->
-            <!-- PIE TYPES -->
-            <!-- -->
-            <transition name="fade">
-                <select v-if="chart_type == 'pie'" v-model="pie_type"
-                    class="bg-gray-950 text-white text-center text-sm font-semibold py-2 px-4 border border-gray-700 rounded shadow">
-                    <option value="pie">pie</option>
-                    <option value="radius">var radius</option>
-                    <option value="gradient">grainy gradient</option>
-                </select>
-            </transition>
+          </div>
         </div>
 
-        <!-- Lista artistas -->
-        <transition v-if="is_track == 0" name="fade">
-            <div v-if="artist_info10 != null" class="md:w-1/2 md:ml-4 pt-4 md:mt-4 pl-8 bg bg-gray-200">
-                <img src="../assets/img/logo_spotify.png" alt="logo_spotify" class="w-32 -ml-2 items-start m-8">
-                <div class="flex flex-wrap grid-cols-6">
-                    <div v-for="(artist, index) in artist_info10" :key="artist.name" class="md:w-1/2 px-2">
-                        <a :href="artist.external_urls.spotify" target="_blank">
-                            <div
-                                class="w-full my-2 transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 overflow-hidden">
-                                <img :src="artist.images[0].url" style="height: 100px;" :alt="artist.name" class="md:block">
-                                <span class="text-sm text-black md:text-base" style="width: 100px;">
-                                    <h5 class="font-bold" style="width: 100px;">{{ '#' + (index + 1) + ' ' }}</h5> {{
-                                        artist.name }}
-                                </span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div v-else>
-                <h2>Cargando...</h2>
-            </div>
-        </transition>
+        <!-- Artists list -->
+        <template v-else-if="isTrack == 0 && artist_info10">
+          <div class="flex items-center justify-between mb-3">
+            <a
+              href="https://www.spotify.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center no-underline opacity-85 transition-opacity hover:opacity-100"
+              :aria-label="t('detail.openSpotify')"
+            >
+              <img src="../assets/img/logo_spotify.png" alt="Spotify" class="h-6 min-w-[72px] w-auto bg-white px-2 py-1 rounded-md" />
+            </a>
+            <p class="text-xs text-text-mute">Top {{ artist_info10.length }}</p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <a
+              v-for="(artist, i) in artist_info10"
+              :key="artist.name"
+              :href="artist.external_urls.spotify"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-3 no-underline p-2 rounded-lg border border-transparent transition-colors hover:bg-bg-surface hover:border-border-subtle group"
+              :aria-label="`${t('detail.openOnSpotify')}: ${artist.name}`"
+            >
+              <span class="text-[0.7rem] font-bold text-text-mute w-[22px] text-center shrink-0">#{{ i + 1 }}</span>
+              <img :src="artist.images?.[0]?.url" :alt="artist.name" class="w-[46px] h-[46px] rounded-[4px] lg:rounded-lg object-cover shrink-0" />
+              <div class="flex flex-col min-w-0 flex-1">
+                <p class="text-[0.875rem] font-semibold text-text-primary truncate">{{ artist.name }}</p>
+                <p class="text-xs text-text-secondary truncate">{{ artist.genres?.slice(0,2).join(', ') }}</p>
+                <p class="text-[0.6rem] font-bold tracking-[0.06em] text-spotify uppercase mt-0.5 opacity-0 transition-opacity group-hover:opacity-100">{{ t('detail.openOnSpotify') }}</p>
+              </div>
+            </a>
+          </div>
+        </template>
 
-        <!-- Lista tracks -->
-        <transition v-if="is_track == 1" name="fade">
-            <div v-if="tracksData10 != null" class="md:w-1/2 md:ml-4 pt-4 md:mt-4 pl-8 bg bg-gray-200">
-                <img src="../assets/img/logo_spotify.png" alt="logo_spotify" class="w-32 -ml-2 items-start m-8">
-                <div class="flex flex-wrap grid-cols-6">
-                    <div v-for="(track, index) in tracksData10" :key="track.id" class="md:w-1/2 px-2">
-                        <a :href="track.external_urls.spotify" target="_blank">
-                            <div
-                                class="w-full my-2 transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 overflow-hidden">
-                                <img :src="track.album.images[0].url" style="height: 100px;" :alt="track.album.name"
-                                    class="md:block">
-                                <span class="text-sm text-black md:text-base" style="width: 100px;">
-                                    <h5 class="font-bold" style="width: 100px;">{{ '#' + (index + 1) + ' ' }}</h5> {{
-                                        track.name }}
-                                </span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div v-else>
-                <h2>Cargando...</h2>
-            </div>
-        </transition>
+        <!-- Tracks list -->
+        <template v-else-if="isTrack == 1 && tracksData10">
+          <div class="flex items-center justify-between mb-3">
+            <a
+              href="https://www.spotify.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center no-underline opacity-85 transition-opacity hover:opacity-100"
+              :aria-label="t('detail.openSpotify')"
+            >
+              <img src="../assets/img/logo_spotify.png" alt="Spotify" class="h-6 min-w-[72px] w-auto bg-white px-2 py-1 rounded-md" />
+            </a>
+            <p class="text-xs text-text-mute">Top {{ tracksData10.length }}</p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <a
+              v-for="(track, i) in tracksData10"
+              :key="track.id"
+              :href="track.external_urls.spotify"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-3 no-underline p-2 rounded-lg border border-transparent transition-colors hover:bg-bg-surface hover:border-border-subtle group"
+              :aria-label="`${t('detail.openOnSpotify')}: ${track.name}`"
+            >
+              <span class="text-[0.7rem] font-bold text-text-mute w-[22px] text-center shrink-0">#{{ i + 1 }}</span>
+              <img :src="track.album?.images?.[0]?.url" :alt="track.name" class="w-[46px] h-[46px] rounded-[4px] lg:rounded-lg object-cover shrink-0" />
+              <div class="flex flex-col min-w-0 flex-1">
+                <p class="text-[0.875rem] font-semibold text-text-primary truncate">{{ track.name }}</p>
+                <p class="text-xs text-text-secondary truncate">{{ track.artists?.[0]?.name }}</p>
+                <p class="text-[0.6rem] font-bold tracking-[0.06em] text-spotify uppercase mt-0.5 opacity-0 transition-opacity group-hover:opacity-100">{{ t('detail.openOnSpotify') }}</p>
+              </div>
+            </a>
+          </div>
+        </template>
+      </section>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-200 py-4 mt-2 bottom-0 w-full">
-        <div class="flex justify-center items-center space-x-4">
-            <a href="https://github.com/daiv05/musycharts-dcdv" target="_blank" rel="noopener" class="mr-4">
-                <img src="../assets/img/github.svg" alt="GitHub" class="h-6 w-6">
-            </a>
-            <a href="https://twitter.com/daiv_09" target="_blank" rel="noopener" class="mr-4">
-                <img src="../assets/img/twitter.svg" alt="Twitter" class="h-6 w-6">
-            </a>
-            <a href="mailto:davidderas50@gmail.com" target="_blank" rel="noopener" class="mr-4">
-                <img src="../assets/img/brand-gmail.svg" alt="Gmail" class="h-6 w-6">
-            </a>
-        </div>
-        <div class="text-center mt-2">
-            <p class="text-gray-700">&copy; 2023 musycharts-dcdv. Powered by Spotify AB.</p>
-        </div>
-    </footer>
+    <!-- Export modal -->
+    <ExportCard
+      v-if="showExport"
+      :profile="profile"
+      :top-genres="genreData10 || []"
+      :top-items="isTrack == 1 ? (tracksData10 || []) : (artist_info10 || [])"
+      :is-track="Number(isTrack)"
+      :time-range="time_limit"
+      @close="showExport = false"
+    />
+
+    <!-- Bottom nav (mobile) -->
+    <BottomNav />
+  </div>
 </template>
-  
 
-<script>
-import axios from 'axios';
-import * as am5 from "@amcharts/amcharts5";
-import * as am5percent from "@amcharts/amcharts5/percent";
-import * as am5hierarchy from "@amcharts/amcharts5/hierarchy";
-import * as am5radar from "@amcharts/amcharts5/radar";
-import * as am5xy from "@amcharts/amcharts5/xy";
-import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
-import am5themes_Material from '@amcharts/amcharts5/themes/Material';
-import am5themes_Responsive from '@amcharts/amcharts5/themes/Responsive';
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useSpotify } from '@/composables/useSpotify.js'
 
-export default {
-    props: ['chart_type', 'time_limit', 'is_track'],
-    data() {
-        return {
-            pie_type: 'pie',
-            radar_type: 'histo',
-            genreData: null,
-            genreData10: null,
-            artist_info: null,
-            artist_info10: null,
-            accessToken: localStorage.getItem('access_token'),
-            tracksData: null,
-            tracksData10: null,
-        };
-    },
-    methods: {
-        generateGenreData(topArtists) {
-            const genreCounts = {};
-            topArtists.forEach((artist) => {
-                artist.genres.forEach((genre) => {
-                    genreCounts[genre] ? genreCounts[genre]++ : genreCounts[genre] = 1;
-                });
-            });
-            let genreData = [];
-            for (const genre in genreCounts) {
-                genreData.push([genre, genreCounts[genre]]);
-            }
-            // Ordenar array de mayor a menor
-            genreData.sort(function (a, b) {
-                return b[1] - a[1];
-            });
-            // Hacer una copia de los datos
-            if (genreData.length > 10) {
-                this.genreData10 = genreData.slice(0, 9);
-            } else {
-                this.genreData10 = genreData;
-            }
-            // // Aleatorizar orden de los datos
-            // this.genreData = genreData.sort(() => Math.random() - 0.5);
-            this.genreData = genreData;
-            const data_chart = [
-                { value: this.genreData[0][1], category: this.genreData[0][0] },
-                { value: this.genreData[1][1], category: this.genreData[1][0] },
-                { value: this.genreData[2][1], category: this.genreData[2][0] },
-                { value: this.genreData[3][1], category: this.genreData[3][0] },
-                { value: this.genreData[4][1], category: this.genreData[4][0] },
-                { value: this.genreData[5][1], category: this.genreData[5][0] },
-                { value: this.genreData[6][1], category: this.genreData[6][0] },
-                { value: this.genreData[7][1], category: this.genreData[7][0] },
-                { value: this.genreData[8][1], category: this.genreData[8][0] },
-                { value: this.genreData[9][1], category: this.genreData[9][0] },
-            ];
-            if (this.chart_type == 'bubble') {
-                this.am5_bubble_v1(data_chart);
-            } else if (this.chart_type == 'pie') {
-                this.am5_pie_v1(data_chart);
-                this.am5_pie_v2(data_chart);
-                this.am5_pie_v3(data_chart);
-            } else if (this.chart_type == 'radar') {
-                this.am5_radar_v1(data_chart);
-            } else {
-                this.am5_gauge_v1(data_chart);
-            }
-        },
-        async getTopArtist() {
-            this.genreData = null;
-            const headers = {
-                Authorization: 'Bearer ' + this.accessToken
-            };
-            try {
-                const response = await axios.get('https://api.spotify.com/v1/me/top/artists?time_range=' + this.time_limit, { headers });
-                const topArtists = response.data.items;
-                // Hacer una copia de los datos
-                if (topArtists.length > 10) {
-                    this.artist_info10 = topArtists.slice(0, 10);
-                    console.log('top artists > 10');
-                } else {
-                    this.artist_info10 = topArtists;
-                    console.log('top artists < 10');
-                }
-                this.generateGenreData(topArtists);
-                console.log(topArtists);
-            } catch (error) {
-                console.log('error en getTopArtist');
-                console.log(error);
-            }
-        },
-        async getTopTracks() {
-            this.tracksData = null;
-            const headers = {
-                Authorization: 'Bearer ' + this.accessToken
-            };
-            try {
-                const response = await axios.get('https://api.spotify.com/v1/me/top/tracks?time_range=' + this.time_limit, { headers });
-                const topTracks = response.data.items;
-                // Hacer una copia de los datos
-                if (topTracks.length > 10) {
-                    this.tracksData10 = topTracks.slice(0, 10);
-                    console.log('top tracks > 10');
-                } else {
-                    this.tracksData10 = topTracks;
-                    console.log('top tracks < 10');
-                }
-                console.log(topTracks);
-            } catch (error) {
-                console.log('error en getTopTracks');
-                console.log(error);
-            }
-        },
-        am5_pie_v1(data_pie) {
-            am5.ready(function () {
-                var root = am5.Root.new("chartdiv_1");
-                root.setThemes([
-                    am5themes_Animated.new(root),
-                    am5themes_Responsive.new(root),
-                    am5themes_Material.new(root),
-                ]);
-                var chart = root.container.children.push(am5percent.PieChart.new(root, {
-                    layout: root.verticalLayout
-                }));
-                var series = chart.series.push(am5percent.PieSeries.new(root, {
-                    valueField: "value",
-                    categoryField: "category"
-                }));
-                series.labels.template.setAll({ fill: am5.color("#ededed") });
-                series.ticks.template.setAll({ fill: am5.color("#ededed"), stroke: am5.color("#ededed") });
-                series.data.setAll(data_pie);
-                var legend = chart.children.push(am5.Legend.new(root, {
-                    centerX: am5.percent(50),
-                    x: am5.percent(50),
-                    marginTop: 15,
-                    marginBottom: 15
-                }));
-                // Cambiar el color de todas las leyendas a blanco
-                legend.labels.template.setAll({ fill: am5.color("#fff") });
-                legend.data.setAll(series.dataItems);
-                series.appear(1000, 100);
-            });
-        },
-        am5_pie_v2(data_pie) {
-            am5.ready(function () {
-                var root = am5.Root.new("chartdiv_2");
-                root.setThemes([
-                    am5themes_Animated.new(root),
-                    am5themes_Responsive.new(root),
-                    am5themes_Material.new(root),
-                ]);
-                var chart = root.container.children.push(am5percent.PieChart.new(root, {
-                    layout: root.verticalLayout
-                }));
-                var series = chart.series.push(am5percent.PieSeries.new(root, {
-                    alignLabels: true,
-                    calculateAggregates: true,
-                    valueField: "value",
-                    categoryField: "category"
-                }));
-                series.slices.template.setAll({
-                    strokeWidth: 3,
-                    stroke: am5.color(0xffffff)
-                });
-                series.labelsContainer.set("paddingTop", 30)
-                series.slices.template.adapters.add("radius", function (radius, target) {
-                    var dataItem = target.dataItem;
-                    var high = series.getPrivate("valueHigh");
-                    if (dataItem) {
-                        var value = target.dataItem.get("valueWorking", 0);
-                        return radius * value / high
-                    }
-                    return radius;
-                });
-                series.labels.template.setAll({ fill: am5.color("#ededed") });
+import NavBar from '@/components/NavBar.vue'
+import BottomNav from '@/components/BottomNav.vue'
+import ExportCard from '@/components/ExportCard.vue'
 
-                series.ticks.template.setAll({ fill: am5.color("#ededed"), stroke: am5.color("#ededed") });
-                series.data.setAll(data_pie);
-                var legend = chart.children.push(am5.Legend.new(root, {
-                    centerX: am5.p50,
-                    x: am5.p50,
-                    marginTop: 15,
-                    marginBottom: 15
-                }));
-                // Cambiar el color de todas las leyendas a blanco
-                legend.labels.template.setAll({ fill: am5.color("#fff") });
-                legend.data.setAll(series.dataItems);
-                series.appear(1000, 100);
-            });
-        },
-        am5_pie_v3(data_pie) {
-            am5.ready(function () {
-                var root = am5.Root.new("chartdiv_3");
-                root.setThemes([
-                    am5themes_Animated.new(root),
-                    am5themes_Responsive.new(root),
-                    am5themes_Material.new(root),
-                ]);
-                var chart = root.container.children.push(
-                    am5percent.PieChart.new(root, {
-                        endAngle: 270,
-                        layout: root.verticalLayout,
-                        innerRadius: am5.percent(60)
-                    })
-                );
-                /*
-                var bg = root.container.set("background", am5.Rectangle.new(root, {
-                  fillPattern: am5.GrainPattern.new(root, {
-                    density: 0.1,
-                    maxOpacity: 0.2
-                  })
-                }))
-                */
-                var series = chart.series.push(
-                    am5percent.PieSeries.new(root, {
-                        valueField: "value",
-                        categoryField: "category",
-                        endAngle: 270
-                    })
-                );
-                var gradient = am5.RadialGradient.new(root, {
-                    stops: [
-                        { color: am5.color(0x000000) },
-                        { color: am5.color(0x000000) },
-                        {}
-                    ]
-                })
-                series.slices.template.setAll({
-                    fillGradient: gradient,
-                    strokeWidth: 2,
-                    stroke: am5.color(0xffffff),
-                    cornerRadius: 10,
-                    shadowOpacity: 0.1,
-                    shadowOffsetX: 2,
-                    shadowOffsetY: 2,
-                    shadowColor: am5.color(0x000000),
-                    fillPattern: am5.GrainPattern.new(root, {
-                        maxOpacity: 0.2,
-                        density: 0.5,
-                        colors: [am5.color(0x000000)]
-                    })
-                })
-                series.slices.template.states.create("hover", {
-                    shadowOpacity: 1,
-                    shadowBlur: 10
-                })
-                series.ticks.template.setAll({
-                    strokeOpacity: 0.4,
-                    strokeDasharray: [2, 2]
-                })
-                series.states.create("hidden", {
-                    endAngle: -90
-                });
-                series.labels.template.setAll({ fill: am5.color("#ededed") });
-                series.ticks.template.setAll({ fill: am5.color("#ededed"), stroke: am5.color("#ededed") });
-                series.data.setAll(data_pie);
+// ── Props ──────────────────────────────────────────────────────────────────
+const props = defineProps({
+  chart_type: { type: String, required: true },
+  time_limit: { type: String, required: true },
+  is_track:   { type: [String, Number], default: 0 },
+})
 
-                var legend = chart.children.push(am5.Legend.new(root, {
-                    centerX: am5.percent(50),
-                    x: am5.percent(50),
-                    marginTop: 15,
-                    marginBottom: 15,
-                }));
-                legend.markerRectangles.template.adapters.add("fillGradient", function () {
-                    return undefined;
-                })
-                // Cambiar el color de todas las leyendas a blanco
-                legend.labels.template.setAll({ fill: am5.color("#fff") });
-                legend.data.setAll(series.dataItems);
-                series.appear(1000, 100);
-            });
-        },
-        am5_bubble_v1(data_bubble) {
-            am5.ready(function () {
-                var root = am5.Root.new("chartdiv_4");
-                root.setThemes([
-                    am5themes_Animated.new(root),
-                    am5themes_Material.new(root),
-                ]);
-                var container = root.container.children.push(am5.Container.new(root, {
-                    width: am5.percent(100),
-                    height: am5.percent(100),
-                    layout: root.verticalLayout
-                }));
-                var series = container.children.push(am5hierarchy.Pack.new(root, {
-                    topDepth: 1,
-                    valueField: "value",
-                    categoryField: "category",
-                    childDataField: "children",
-                }));
+// ── State ──────────────────────────────────────────────────────────────────
+const { t } = useI18n()
+const spotify = useSpotify()
 
-                series.circles.template.setAll({
-                    fillOpacity: 0.9,
-                    strokeWidth: 2,
-                    strokeOpacity: 3
-                });
+const loading = ref(true)
+const showExport = ref(false)
 
-                var data = {
-                    name: "Root",
-                    children: data_bubble,
-                };
-                series.data.setAll([data]);
-                series.appear(1000, 100);
+const profile = ref(null)
+const genreData10 = ref(null)
+const artist_info10 = ref(null)
+const tracksData10 = ref(null)
 
-            });
-        },
-        am5_radar_v1(data_radar) {
-            am5.ready(function () {
-                var root = am5.Root.new("chartdiv_5");
-                root.setThemes([
-                    am5themes_Animated.new(root),
-                    am5themes_Material.new(root)
-                ]);
-                var chart = root.container.children.push(am5radar.RadarChart.new(root, {
-                    panX: false,
-                    panY: false,
-                    wheelX: "none",
-                    wheelY: "none",
-                    startAngle: -84,
-                    endAngle: 264,
-                    innerRadius: am5.percent(40)
-                }));
-                const cursor = chart.set("cursor", am5radar.RadarCursor.new(root, {
-                    behavior: "zoomX"
-                }));
-                cursor.lineY.set("forceHidden", true);
-                chart.set("scrollbarX", am5.Scrollbar.new(root, {
-                    orientation: "horizontal",
-                    exportable: false
-                }));
-                var xRenderer = am5radar.AxisRendererCircular.new(root, {
-                    minGridDistance: 30
-                });
-                xRenderer.grid.template.set("forceHidden", true);
-                xRenderer.labels.template.set("fill", am5.color("#fff"));
-                var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-                    maxDeviation: 0,
-                    categoryField: "category",
-                    renderer: xRenderer
-                }));
-                var yRenderer = am5radar.AxisRendererRadial.new(root, {});
-                yRenderer.labels.template.set("centerX", am5.p50);
-                yRenderer.labels.template.set("fill", am5.color("#fff"));
-                var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-                    maxDeviation: 0.3,
-                    min: 0,
-                    renderer: yRenderer
-                }));
-                var series = chart.series.push(am5radar.RadarColumnSeries.new(root, {
-                    name: "Series 1",
-                    sequencedInterpolation: true,
-                    xAxis: xAxis,
-                    yAxis: yAxis,
-                    valueYField: "value",
-                    categoryXField: "category"
-                }));
-                // Rounded corners for columns
-                series.columns.template.setAll({
-                    cornerRadius: 5,
-                    tooltipText: "{categoryX}: {valueY}"
-                });
-                // Make each column to be of a different color
-                series.columns.template.adapters.add("fill", function (fill, target) {
-                    return chart.get("colors").getIndex(series.columns.indexOf(target));
-                });
-                series.columns.template.adapters.add("stroke", function (stroke, target) {
-                    return chart.get("colors").getIndex(series.columns.indexOf(target));
-                });
+const isTrack = computed(() => Number(props.is_track))
 
-                var data = data_radar;
-                xAxis.data.setAll(data);
-                series.data.setAll(data);
-                series.appear(1000);
-                chart.appear(1000, 100);
-            });
-        },
-        am5_gauge_v1(data_gauge) {
-            am5.ready(function () {
-                var root = am5.Root.new("chartdiv_6");
-                root.setThemes([
-                    am5themes_Animated.new(root),
-                    am5themes_Material.new(root)
-                ]);
-                var chart = root.container.children.push(am5radar.RadarChart.new(root, {
-                    panX: false,
-                    panY: false,
-                    wheelX: "panX",
-                    wheelY: "zoomX",
-                    innerRadius: am5.percent(40),
-                    startAngle: -90,
-                    endAngle: 180
-                }));
+const cssColors = ['#1DB954', '#ff547f', '#00befc', '#155abc', '#f2f2f2', '#a3a3a3', '#1ed760']
+const tailwindColors = ['bg-spotify', 'bg-primary', 'bg-secondary', 'bg-tertiary', 'bg-text-primary', 'bg-text-secondary', 'bg-spotify-hover']
 
+function getChartColor(i) {
+  return cssColors[i % cssColors.length]
+}
+function getChartColorClass(i) {
+  return tailwindColors[i % tailwindColors.length]
+}
 
-                // Suma de todos los valores
-                var sum = 0;
-                data_gauge.forEach((element) => {
-                    sum += element.value;
-                });
+// ── Data loading ──────────────────────────────────────────────────────────
+onMounted(async () => {
+  try {
+    profile.value = await spotify.getProfile()
+    const artists = await spotify.getTopArtists(props.time_limit, 20)
 
-                // Recorrer data_gauge y agregar propiedades de full, columnSettings.
-                var i = 0;
-                data_gauge.forEach((element, index) => {
-                    // Obtener porcentaje respecto a los demas elementos a partir del value
-                    console.log(sum + ' / ' + element.value)
-                    element.value = Number((element.value / sum * 100).toFixed(2));
-                    element.full = 100;
-                    element.columnSettings = {
-                        fill: chart.get("colors").getIndex(i++)
-                    };
-                });
+    // Build genre data
+    const counts = {}
+    artists.forEach(a => a.genres.forEach(g => { counts[g] = (counts[g] || 0) + 1 }))
+    let sorted = Object.entries(counts).map(([k, v]) => [k, v])
+    sorted.sort((a, b) => b[1] - a[1])
+    genreData10.value = sorted.slice(0, 10)
 
-                console.log(data_gauge);
+    artist_info10.value = artists.slice(0, 10)
 
-                // Data
-                var data = data_gauge;
-
-                var cursor = chart.set("cursor", am5radar.RadarCursor.new(root, {
-                    behavior: "zoomX"
-                }));
-
-                cursor.lineY.set("visible", false);
-
-                var xRenderer = am5radar.AxisRendererCircular.new(root, {
-                    minGridDistance: 50
-                });
-
-                xRenderer.labels.template.setAll({
-                    radius: 10,
-                    fill: am5.color("#fff"),
-                });
-
-                xRenderer.grid.template.setAll({
-                    forceHidden: true
-                });
-
-                var xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, {
-                    renderer: xRenderer,
-                    min: 0,
-                    max: 100,
-                    strictMinMax: true,
-                    numberFormat: "#'%'",
-                    tooltip: am5.Tooltip.new(root, {})
-                }));
-
-                var yRenderer = am5radar.AxisRendererRadial.new(root, {
-                    minGridDistance: 20
-                });
-
-                yRenderer.labels.template.setAll({
-                    centerX: am5.p100,
-                    fontWeight: "400",
-                    fontSize: 15,
-                    templateField: "columnSettings",
-                    fill: am5.color("#fff"),
-                });
-
-                yRenderer.grid.template.setAll({
-                    forceHidden: true
-                });
-
-                var yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {
-                    categoryField: "category",
-                    renderer: yRenderer
-                }));
-
-                yAxis.data.setAll(data);
-
-                var series1 = chart.series.push(am5radar.RadarColumnSeries.new(root, {
-                    xAxis: xAxis,
-                    yAxis: yAxis,
-                    clustered: false,
-                    valueXField: "full",
-                    categoryYField: "category",
-                    fill: root.interfaceColors.get("alternativeBackground")
-                }));
-
-                series1.columns.template.setAll({
-                    width: am5.p100,
-                    fillOpacity: 0.08,
-                    strokeOpacity: 0,
-                    cornerRadius: 20
-                });
-
-                series1.data.setAll(data);
-
-                var series2 = chart.series.push(am5radar.RadarColumnSeries.new(root, {
-                    xAxis: xAxis,
-                    yAxis: yAxis,
-                    clustered: false,
-                    valueXField: "value",
-                    categoryYField: "category"
-                }));
-
-                series2.columns.template.setAll({
-                    width: am5.p100,
-                    strokeOpacity: 0,
-                    tooltipText: "{category}: {valueX}%",
-                    cornerRadius: 20,
-                    templateField: "columnSettings"
-                });
-
-                series2.data.setAll(data);
-
-                series1.appear(1000);
-                series2.appear(1000);
-                chart.appear(1000, 100);
-
-            });
-        },
-
-    },
-    mounted() {
-        this.getTopArtist();
-        this.getTopTracks();
-    },
-};
-
+    // Load tracks
+    const tracks = await spotify.getTopTracks(props.time_limit, 10)
+    tracksData10.value = tracks.slice(0, 10)
+  } finally {
+    loading.value = false
+  }
+})
 </script>
 
-<style>
-#chartdiv_1 {
-    width: 100%;
-    height: 500px;
+<style scoped>
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
-#chartdiv_2 {
-    width: 100%;
-    height: 500px;
-}
-
-#chartdiv_3 {
-    width: 100%;
-    height: 500px;
-}
-
-#chartdiv_4 {
-    width: 100%;
-    height: 500px;
-}
-
-#chartdiv_5 {
-    width: 100%;
-    height: 500px;
-}
-
-#chartdiv_6 {
-    width: 100%;
-    height: 500px;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity .9s
-}
-
-.fade-enter,
-.fade-leave-to
-
-/* .fade-leave-active below version 2.1.8 */
-    {
-    opacity: 0
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
 }
 </style>
