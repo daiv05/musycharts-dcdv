@@ -1,6 +1,6 @@
 <template>
   <!-- Modal overlay -->
-  <div class="fixed inset-0 z-[200] bg-black/75 flex items-center justify-center p-4 backdrop-blur-sm" @click.self="$emit('close')">
+  <div class="fixed inset-0 z-200 bg-black/75 flex items-center justify-center p-4 backdrop-blur-sm" @click.self="$emit('close')">
     <div class="bg-bg-surface border border-border-subtle rounded-2xl p-5 w-full max-w-[480px] max-h-[90vh] overflow-y-auto flex flex-col gap-4">
       <div class="flex justify-between items-center">
         <h2 class="text-base font-bold text-text-primary">{{ t('detail.export') }}</h2>
@@ -72,7 +72,7 @@
           ref="cardRef"
           class="flex flex-col gap-4 font-sans overflow-hidden shrink-0 transition-all duration-300"
           :class="[
-            format === 'story' ? 'w-[180px] aspect-[9/16] p-4 text-[0.6rem]' : 'w-[320px] aspect-square p-5 text-sm',
+            format === 'story' ? 'w-[180px] aspect-9/16 p-4 text-[0.6rem]' : 'w-[320px] aspect-square p-5 text-sm',
             themeClasses
           ]"
         >
