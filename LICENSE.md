@@ -1,4 +1,3 @@
-
 MIT License
 
 Derechos de autor (c) 2023 David Deras
