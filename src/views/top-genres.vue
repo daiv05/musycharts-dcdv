@@ -1,16 +1,10 @@
 <template>
-  <!-- Regresar a la pagina anterior -->
-  <div class="flex bg-gray-950 justify-left items-center space-x-4">
-    <a @click="$router.go(-1)" href="#" class="mr-4 flex items-center">
-      <img src="../assets/img/arrow-left.svg" alt="Regresar" class="h-6 w-6 mr-1" />
-      {{ $t("nav.back") }}
-    </a>
-  </div>
-  <div class="md:flex bg-gray-950 items-center h-full">
+  <BackButton />
+  <div class="md:flex bg-zinc-50 dark:bg-zinc-950 items-center h-full transition-colors duration-300">
     <!-- Grafico -->
-    <div class="text-center md:w-1/2 pt-8 pb-8">
+    <div class="text-center md:w-2/3 pt-8 pb-8">
       <div>
-        <p class="leading-6 font-bold text-xl text-center">{{ $t("detail.topGenres") }}</p>
+        <p class="leading-6 font-bold text-xl text-center text-gray-900 dark:text-gray-100 transition-colors duration-300">{{ $t("detail.topGenres") }}</p>
 
         <!-- -->
         <!-- PIE CHARTS -->
@@ -60,7 +54,7 @@
         <select
           v-if="chart_type == 'pie'"
           v-model="pie_type"
-          class="bg-gray-950 text-white text-center text-sm font-semibold py-2 px-4 border border-gray-700 rounded-lg hover:border-gray-500 transition-colors"
+          class="bg-white dark:bg-gray-950 text-gray-900 dark:text-white text-center text-sm font-semibold py-2 px-4 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:border-emerald-500 hover:border-gray-400 dark:hover:border-gray-500 transition-colors"
         >
           <option value="pie">{{ $t("detail.pieType.pie") }}</option>
           <option value="radius">{{ $t("detail.pieType.radius") }}</option>
@@ -71,100 +65,24 @@
 
     <!-- Lista artistas -->
     <transition v-if="is_track == 0" name="fade">
-      <div v-if="artist_info10 != null" class="md:w-1/2 md:ml-4 pt-4 md:mt-4 pl-8 bg bg-gray-200">
-        <img
-          src="../assets/img/logo_spotify.png"
-          alt="logo_spotify"
-          class="w-32 -ml-2 items-start m-8"
-        />
-        <div class="flex flex-wrap grid-cols-6">
-          <div v-for="(artist, index) in artist_info10" :key="artist.name" class="md:w-1/2 px-2">
-            <a :href="artist.external_urls.spotify" target="_blank">
-              <div
-                class="w-full my-2 transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 overflow-hidden"
-              >
-                <img
-                  :src="artist.images[0].url"
-                  style="height: 100px"
-                  :alt="artist.name"
-                  class="md:block"
-                />
-                <span class="text-sm text-black md:text-base" style="width: 100px">
-                  <h5 class="font-bold" style="width: 100px">{{ "#" + (index + 1) + " " }}</h5>
-                  {{ artist.name }}
-                </span>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div v-else>
-        <h2>{{ $t("detail.loading") }}</h2>
-      </div>
+      <SpotifyList :items="artist_info10" :is-track="0" />
     </transition>
 
     <!-- Lista tracks -->
     <transition v-if="is_track == 1" name="fade">
-      <div v-if="tracksData10 != null" class="md:w-1/2 md:ml-4 pt-4 md:mt-4 pl-8 bg bg-gray-200">
-        <img
-          src="../assets/img/logo_spotify.png"
-          alt="logo_spotify"
-          class="w-32 -ml-2 items-start m-8"
-        />
-        <div class="flex flex-wrap grid-cols-6">
-          <div v-for="(track, index) in tracksData10" :key="track.id" class="md:w-1/2 px-2">
-            <a :href="track.external_urls.spotify" target="_blank">
-              <div
-                class="w-full my-2 transition hover:-translate-y-1 hover:scale-105 ease-in-out delay-100 overflow-hidden"
-              >
-                <img
-                  :src="track.album.images[0].url"
-                  style="height: 100px"
-                  :alt="track.album.name"
-                  class="md:block"
-                />
-                <span class="text-sm text-black md:text-base" style="width: 100px">
-                  <h5 class="font-bold" style="width: 100px">{{ "#" + (index + 1) + " " }}</h5>
-                  {{ track.name }}
-                </span>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div v-else>
-        <h2>{{ $t("detail.loading") }}</h2>
-      </div>
+      <SpotifyList :items="tracksData10" :is-track="1" />
     </transition>
   </div>
 
-  <!-- Footer -->
-  <footer class="bg-gray-200 py-4 mt-2 bottom-0 w-full">
-    <div class="flex justify-center items-center space-x-4">
-      <a
-        href="https://github.com/daiv05/musycharts-dcdv"
-        target="_blank"
-        rel="noopener"
-        class="mr-4"
-      >
-        <img src="../assets/img/github.svg" alt="GitHub" class="h-6 w-6" />
-      </a>
-      <a href="https://twitter.com/daiv_09" target="_blank" rel="noopener" class="mr-4">
-        <img src="../assets/img/twitter.svg" alt="Twitter" class="h-6 w-6" />
-      </a>
-      <a href="mailto:davidderas50@gmail.com" target="_blank" rel="noopener" class="mr-4">
-        <img src="../assets/img/brand-gmail.svg" alt="Gmail" class="h-6 w-6" />
-      </a>
-    </div>
-    <div class="text-center mt-2">
-      <p class="text-gray-700">{{ $t("footer.copy", { year: new Date().getFullYear() }) }}</p>
-    </div>
-  </footer>
+  <AppFooter />
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
+import AppFooter from "@/components/AppFooter.vue";
+import BackButton from "@/components/BackButton.vue";
+import SpotifyList from "@/components/SpotifyList.vue";
 import * as am5 from "@amcharts/amcharts5";
 import * as am5percent from "@amcharts/amcharts5/percent";
 import * as am5hierarchy from "@amcharts/amcharts5/hierarchy";
@@ -192,7 +110,11 @@ function generateGenreData(topArtists) {
   const genreCounts = {};
   topArtists.forEach((artist) => {
     artist.genres.forEach((genre) => {
-      genreCounts[genre] ? genreCounts[genre]++ : (genreCounts[genre] = 1);
+      if (genreCounts[genre]) {
+        genreCounts[genre]++;
+      } else {
+        genreCounts[genre] = 1;
+      }
     });
   });
   let data = [];
@@ -257,6 +179,9 @@ async function fetchTopTracks() {
 }
 function am5_pie_v1(data_pie) {
   am5.ready(function () {
+    if (am5.registry.rootElements.some((el) => el.dom.id === "chartdiv_1")) {
+      am5.registry.rootElements.find((el) => el.dom.id === "chartdiv_1").dispose();
+    }
     var root = am5.Root.new("chartdiv_1");
     root.setThemes([
       am5themes_Animated.new(root),
@@ -274,8 +199,11 @@ function am5_pie_v1(data_pie) {
         categoryField: "category",
       }),
     );
-    series.labels.template.setAll({ fill: am5.color("#ededed") });
-    series.ticks.template.setAll({ fill: am5.color("#ededed"), stroke: am5.color("#ededed") });
+    
+    var textColor = document.documentElement.classList.contains("dark") ? am5.color("#fff") : am5.color("#111827");
+
+    series.labels.template.setAll({ fill: textColor });
+    series.ticks.template.setAll({ fill: textColor, stroke: textColor });
     series.data.setAll(data_pie);
     var legend = chart.children.push(
       am5.Legend.new(root, {
@@ -285,14 +213,17 @@ function am5_pie_v1(data_pie) {
         marginBottom: 15,
       }),
     );
-    // Cambiar el color de todas las leyendas a blanco
-    legend.labels.template.setAll({ fill: am5.color("#fff") });
+    // Cambiar el color de todas las leyendas
+    legend.labels.template.setAll({ fill: textColor });
     legend.data.setAll(series.dataItems);
     series.appear(1000, 100);
   });
 }
 function am5_pie_v2(data_pie) {
   am5.ready(function () {
+    if (am5.registry.rootElements.some((el) => el.dom.id === "chartdiv_2")) {
+      am5.registry.rootElements.find((el) => el.dom.id === "chartdiv_2").dispose();
+    }
     var root = am5.Root.new("chartdiv_2");
     root.setThemes([
       am5themes_Animated.new(root),
@@ -312,9 +243,12 @@ function am5_pie_v2(data_pie) {
         categoryField: "category",
       }),
     );
+    var textColor = document.documentElement.classList.contains("dark") ? am5.color("#fff") : am5.color("#111827");
+    var strokeColor = document.documentElement.classList.contains("dark") ? am5.color("#09090b") : am5.color("#ffffff");
+
     series.slices.template.setAll({
       strokeWidth: 3,
-      stroke: am5.color(0xffffff),
+      stroke: strokeColor,
     });
     series.labelsContainer.set("paddingTop", 30);
     series.slices.template.adapters.add("radius", function (radius, target) {
@@ -326,9 +260,9 @@ function am5_pie_v2(data_pie) {
       }
       return radius;
     });
-    series.labels.template.setAll({ fill: am5.color("#ededed") });
+    series.labels.template.setAll({ fill: textColor });
 
-    series.ticks.template.setAll({ fill: am5.color("#ededed"), stroke: am5.color("#ededed") });
+    series.ticks.template.setAll({ fill: textColor, stroke: textColor });
     series.data.setAll(data_pie);
     var legend = chart.children.push(
       am5.Legend.new(root, {
@@ -338,14 +272,17 @@ function am5_pie_v2(data_pie) {
         marginBottom: 15,
       }),
     );
-    // Cambiar el color de todas las leyendas a blanco
-    legend.labels.template.setAll({ fill: am5.color("#fff") });
+    // Cambiar el color de todas las leyendas
+    legend.labels.template.setAll({ fill: textColor });
     legend.data.setAll(series.dataItems);
     series.appear(1000, 100);
   });
 }
 function am5_pie_v3(data_pie) {
   am5.ready(function () {
+    if (am5.registry.rootElements.some((el) => el.dom.id === "chartdiv_3")) {
+      am5.registry.rootElements.find((el) => el.dom.id === "chartdiv_3").dispose();
+    }
     var root = am5.Root.new("chartdiv_3");
     root.setThemes([
       am5themes_Animated.new(root),
@@ -374,9 +311,12 @@ function am5_pie_v3(data_pie) {
         endAngle: 270,
       }),
     );
+    var textColor = document.documentElement.classList.contains("dark") ? am5.color("#fff") : am5.color("#111827");
+    var strokeColor = document.documentElement.classList.contains("dark") ? am5.color("#09090b") : am5.color("#ffffff");
+
     series.slices.template.setAll({
       strokeWidth: 2,
-      stroke: am5.color(0xffffff),
+      stroke: strokeColor,
       cornerRadius: 10,
       fillPattern: am5.GrainPattern.new(root, {
         maxOpacity: 0.2,
@@ -394,8 +334,8 @@ function am5_pie_v3(data_pie) {
     series.states.create("hidden", {
       endAngle: -90,
     });
-    series.labels.template.setAll({ fill: am5.color("#ededed") });
-    series.ticks.template.setAll({ fill: am5.color("#ededed"), stroke: am5.color("#ededed") });
+    series.labels.template.setAll({ fill: textColor });
+    series.ticks.template.setAll({ fill: textColor, stroke: textColor });
     series.data.setAll(data_pie);
 
     var legend = chart.children.push(
@@ -406,14 +346,17 @@ function am5_pie_v3(data_pie) {
         marginBottom: 15,
       }),
     );
-    // Cambiar el color de todas las leyendas a blanco
-    legend.labels.template.setAll({ fill: am5.color("#fff") });
+    // Cambiar el color de todas las leyendas
+    legend.labels.template.setAll({ fill: textColor });
     legend.data.setAll(series.dataItems);
     series.appear(1000, 100);
   });
 }
 function am5_bubble_v1(data_bubble) {
   am5.ready(function () {
+    if (am5.registry.rootElements.some((el) => el.dom.id === "chartdiv_4")) {
+      am5.registry.rootElements.find((el) => el.dom.id === "chartdiv_4").dispose();
+    }
     var root = am5.Root.new("chartdiv_4");
     root.setThemes([am5themes_Animated.new(root), am5themes_Material.new(root)]);
     var container = root.container.children.push(
@@ -448,6 +391,9 @@ function am5_bubble_v1(data_bubble) {
 }
 function am5_radar_v1(data_radar) {
   am5.ready(function () {
+    if (am5.registry.rootElements.some((el) => el.dom.id === "chartdiv_5")) {
+      am5.registry.rootElements.find((el) => el.dom.id === "chartdiv_5").dispose();
+    }
     var root = am5.Root.new("chartdiv_5");
     root.setThemes([am5themes_Animated.new(root), am5themes_Material.new(root)]);
     var chart = root.container.children.push(
@@ -475,11 +421,13 @@ function am5_radar_v1(data_radar) {
         exportable: false,
       }),
     );
+    var textColor = document.documentElement.classList.contains("dark") ? am5.color("#fff") : am5.color("#111827");
+
     var xRenderer = am5radar.AxisRendererCircular.new(root, {
       minGridDistance: 30,
     });
     xRenderer.grid.template.set("forceHidden", true);
-    xRenderer.labels.template.set("fill", am5.color("#fff"));
+    xRenderer.labels.template.set("fill", textColor);
     var xAxis = chart.xAxes.push(
       am5xy.CategoryAxis.new(root, {
         maxDeviation: 0,
@@ -489,7 +437,7 @@ function am5_radar_v1(data_radar) {
     );
     var yRenderer = am5radar.AxisRendererRadial.new(root, {});
     yRenderer.labels.template.set("centerX", am5.p50);
-    yRenderer.labels.template.set("fill", am5.color("#fff"));
+    yRenderer.labels.template.set("fill", textColor);
     var yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
         maxDeviation: 0.3,
@@ -529,6 +477,9 @@ function am5_radar_v1(data_radar) {
 }
 function am5_gauge_v1(data_gauge) {
   am5.ready(function () {
+    if (am5.registry.rootElements.some((el) => el.dom.id === "chartdiv_6")) {
+      am5.registry.rootElements.find((el) => el.dom.id === "chartdiv_6").dispose();
+    }
     var root = am5.Root.new("chartdiv_6");
     root.setThemes([am5themes_Animated.new(root), am5themes_Material.new(root)]);
     var chart = root.container.children.push(
@@ -566,6 +517,8 @@ function am5_gauge_v1(data_gauge) {
     // Data
     var data = data_gauge;
 
+    var textColor = document.documentElement.classList.contains("dark") ? am5.color("#fff") : am5.color("#111827");
+
     var cursor = chart.set(
       "cursor",
       am5radar.RadarCursor.new(root, {
@@ -581,7 +534,7 @@ function am5_gauge_v1(data_gauge) {
 
     xRenderer.labels.template.setAll({
       radius: 10,
-      fill: am5.color("#fff"),
+      fill: textColor,
     });
 
     xRenderer.grid.template.setAll({
@@ -608,7 +561,7 @@ function am5_gauge_v1(data_gauge) {
       fontWeight: "400",
       fontSize: 15,
       templateField: "columnSettings",
-      fill: am5.color("#fff"),
+      fill: textColor,
     });
 
     yRenderer.grid.template.setAll({
@@ -673,6 +626,21 @@ function am5_gauge_v1(data_gauge) {
 onMounted(() => {
   fetchTopArtists();
   fetchTopTracks();
+
+  // Watch for theme changes (dark class on document.documentElement)
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName === 'class') {
+        // Re-generate chart if artist data is already loaded and we are not in track list mode
+        if (artist_info10.value && props.is_track == 0) {
+          // Add a tiny delay to allow the CSS to paint first, then re-render chart
+          setTimeout(() => generateGenreData(artist_info10.value), 50);
+        }
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, { attributes: true });
 });
 </script>
 
