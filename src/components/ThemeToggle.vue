@@ -1,7 +1,7 @@
 <template>
   <button
     @click="toggleTheme"
-    class="relative inline-flex h-8 w-16 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 hover:shadow-lg hover:scale-105 active:scale-95 bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 cursor-pointer"
+    class="relative inline-flex h-8 w-16 items-center rounded-full transition-colors duration-300 focus:outline-none bg-gray-200 dark:bg-gray-800 cursor-pointer"
     :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
   >
     <span class="sr-only">Toggle theme</span>
@@ -27,16 +27,21 @@
         class="h-4 w-4 transition-colors duration-300"
         :class="isDark ? 'text-indigo-400' : 'text-gray-400'"
         fill="currentColor"
-        viewBox="0 0 20 20"
+        viewBox="0 0 14 14"
       >
-        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+        <path
+          fill="currentColor"
+          fill-rule="evenodd"
+          d="M10.176 1.197a.5.5 0 0 0-.509-.695a3.5 3.5 0 0 0-3.11 4.03a5.4 5.4 0 0 1 2.18 1.66a4.4 4.4 0 0 1 3.233.697a3.5 3.5 0 0 0 1.528-2.556a.5.5 0 0 0-.695-.509a2 2 0 0 1-2.627-2.627M1.625 9.5a2.875 2.875 0 0 1 5.653-.744a.625.625 0 0 0 1.009.315A1.875 1.875 0 1 1 9.5 12.375h-5A2.875 2.875 0 0 1 1.625 9.5M4.5 5.375a4.125 4.125 0 0 0 0 8.25h5a3.125 3.125 0 1 0-1.307-5.964A4.12 4.12 0 0 0 4.5 5.375"
+          clip-rule="evenodd"
+        />
       </svg>
     </span>
 
     <!-- Toggle knob -->
     <span
       class="h-6 w-6 transform rounded-full bg-white dark:bg-gray-900 shadow-md transition-transform duration-300 ease-in-out z-0"
-      :class="isDark ? 'translate-x-[34px]' : 'translate-x-1'"
+      :class="isDark ? 'translate-x-[36px]' : 'translate-x-1'"
     >
     </span>
   </button>

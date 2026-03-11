@@ -1,47 +1,47 @@
 <template>
-  <BackButton />
-  <div class="grid grid-cols-12 bg-zinc-50 dark:bg-zinc-950 h-full transition-colors duration-300">
-    <!-- PERFIL LOGIN INFO -->
-    <div class="col-span-3 md:col-span-2 items-start justify-center">
-      <ProfileCard :perfil="perfil" :toggle_genre="toggle_genre" @toggle-change="change_toggle" @disconnect="disconnect_app" />
-    </div>
-    <!-- CARDS -->
-    <div class="col-span-9 items-center justify-center mb-4 pt-8">
-      <div class="grid grid-cols-12">
-        <DashboardCard
-          :title="$t('dashboard.pie.name')"
-          :description="$t('dashboard.pie.desc', { type: toggle_genre ? $t('dashboard.toggleTracks').toLowerCase() : $t('dashboard.toggleArtists').toLowerCase() })"
-          :image-src="pieImg"
-          chart-type="pie"
-          :toggle-genre="toggle_genre"
-        />
-        <DashboardCard
-          :title="$t('dashboard.bubble.name')"
-          :description="$t('dashboard.bubble.desc', { type: toggle_genre ? $t('dashboard.toggleTracks').toLowerCase() : $t('dashboard.toggleArtists').toLowerCase() })"
-          :image-src="bubbleImg"
-          chart-type="bubble"
-          :toggle-genre="toggle_genre"
-        />
+  <div class="flex flex-col min-h-screen">
+    <BackButton />
+    <div class="flex flex-col md:flex-row flex-1 bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300">
+      <!-- PERFIL LOGIN INFO -->
+      <div class="w-full md:w-80 lg:w-96 shrink-0 p-4 md:p-6 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-800">
+        <ProfileCard :perfil="perfil" :toggle_genre="toggle_genre" @toggle-change="change_toggle" @disconnect="disconnect_app" />
       </div>
-      <div class="grid grid-cols-12">
-        <DashboardCard
-          :title="$t('dashboard.radar.name')"
-          :description="$t('dashboard.radar.desc', { type: toggle_genre ? $t('dashboard.toggleTracks').toLowerCase() : $t('dashboard.toggleArtists').toLowerCase() })"
-          :image-src="radarImg"
-          chart-type="radar"
-          :toggle-genre="toggle_genre"
-        />
-        <DashboardCard
-          :title="$t('dashboard.gauge.name')"
-          :description="$t('dashboard.gauge.desc', { type: toggle_genre ? $t('dashboard.toggleTracks').toLowerCase() : $t('dashboard.toggleArtists').toLowerCase() })"
-          :image-src="gaugeImg"
-          chart-type="gauge"
-          :toggle-genre="toggle_genre"
-        />
+      <!-- CARDS -->
+      <div class="flex-1 p-4 md:p-6 lg:p-8">
+        <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
+          <DashboardCard
+            :title="$t('dashboard.pie.name')"
+            :description="$t('dashboard.pie.desc', { type: toggle_genre ? $t('dashboard.toggleTracks').toLowerCase() : $t('dashboard.toggleArtists').toLowerCase() })"
+            :image-src="pieImg"
+            chart-type="pie"
+            :toggle-genre="toggle_genre"
+          />
+          <DashboardCard
+            :title="$t('dashboard.bubble.name')"
+            :description="$t('dashboard.bubble.desc', { type: toggle_genre ? $t('dashboard.toggleTracks').toLowerCase() : $t('dashboard.toggleArtists').toLowerCase() })"
+            :image-src="bubbleImg"
+            chart-type="bubble"
+            :toggle-genre="toggle_genre"
+          />
+          <DashboardCard
+            :title="$t('dashboard.radar.name')"
+            :description="$t('dashboard.radar.desc', { type: toggle_genre ? $t('dashboard.toggleTracks').toLowerCase() : $t('dashboard.toggleArtists').toLowerCase() })"
+            :image-src="radarImg"
+            chart-type="radar"
+            :toggle-genre="toggle_genre"
+          />
+          <DashboardCard
+            :title="$t('dashboard.gauge.name')"
+            :description="$t('dashboard.gauge.desc', { type: toggle_genre ? $t('dashboard.toggleTracks').toLowerCase() : $t('dashboard.toggleArtists').toLowerCase() })"
+            :image-src="gaugeImg"
+            chart-type="gauge"
+            :toggle-genre="toggle_genre"
+          />
+        </div>
       </div>
     </div>
+    <AppFooter />
   </div>
-  <AppFooter />
 </template>
 
 <script setup>

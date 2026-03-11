@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative inline-flex bg-gray-200 dark:bg-gray-800 rounded-full p-1 shadow-inner overflow-hidden select-none"
+    class="relative inline-flex bg-gray-200 dark:bg-gray-800 rounded-full h-8 overflow-hidden select-none"
   >
     <!-- Sliding highlight background -->
     <div
@@ -11,11 +11,6 @@
     <button
       @click="setLanguage('es')"
       class="relative z-10 px-3 py-1 text-xs font-bold rounded-full transition-colors duration-300 w-12 text-center cursor-pointer"
-      :class="
-        currentLocale === 'es'
-          ? 'text-emerald-600 dark:text-emerald-400'
-          : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
-      "
       aria-label="Cambiar a Español"
     >
       ES
@@ -23,11 +18,6 @@
     <button
       @click="setLanguage('en')"
       class="relative z-10 px-3 py-1 text-xs font-bold rounded-full transition-colors duration-300 w-12 text-center cursor-pointer"
-      :class="
-        currentLocale === 'en'
-          ? 'text-indigo-600 dark:text-indigo-400'
-          : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
-      "
       aria-label="Switch to English"
     >
       EN

@@ -9,10 +9,10 @@
         />
       </div>
       <div class="flex flex-col items-center mt-4 md:ml-4 justify-center px-4">
-        <p class="text-xl md:text-2xl text-white mb-2 text-center md:text-left">
+        <p class="text-xl md:text-2xl text-zinc-900 dark:text-zinc-100 mb-2 text-center md:text-left">
           {{ $t("landing.tagline") }}
         </p>
-        <p class="text-sm md:text-base text-white mb-8 text-center md:text-left">
+        <p class="text-sm md:text-base text-zinc-600 dark:text-zinc-400 mb-8 text-center md:text-left">
           {{ $t("landing.subtitle") }}
         </p>
         <template v-if="!isAuthenticated">

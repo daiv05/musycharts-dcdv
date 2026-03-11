@@ -1,37 +1,46 @@
 <template>
   <div
-    class="md:col-span-6 col-span-11 transition-colors hover:border-emerald-500 dark:hover:border-emerald-500 ease-in-out delay-100 mx-4 mb-4 pb-8 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm dark:shadow-none rounded-lg overflow-hidden"
+    class="flex flex-col group transition-all duration-300 ease-in-out bg-zinc-50 dark:bg-zinc-900/40 border-2 border-zinc-200 dark:border-zinc-800 hover:border-emerald-500 dark:hover:border-emerald-500 rounded-2xl overflow-hidden h-full"
   >
-    <img
-      class="w-full h-35 md:h-64 object-cover"
-      :src="imageSrc"
-      :alt="title"
-    />
-    <div class="px-4 py-2">
-      <div class="font-bold text-lg md:text-xl mb-2 text-gray-900 dark:text-white">{{ title }}</div>
-      <p class="text-sm md:text-base text-gray-600 dark:text-gray-400">
+    <div
+      class="relative overflow-hidden aspect-video w-full border-b-2 border-zinc-200 dark:border-zinc-800 group-hover:border-emerald-500 transition-colors duration-300"
+    >
+      <img class="absolute inset-0 w-full h-full object-cover" :src="imageSrc" :alt="title" />
+    </div>
+    <div class="flex flex-col flex-1 p-5 md:p-6">
+      <div
+        class="font-bold text-xl mb-2 text-zinc-900 dark:text-zinc-100 transition-colors group-hover:text-emerald-500"
+      >
+        {{ title }}
+      </div>
+      <p class="text-sm md:text-base text-zinc-600 dark:text-zinc-400 mb-6 flex-1 leading-relaxed">
         {{ description }}
       </p>
-    </div>
-    <div class="px-4 py-2">
-      <router-link
-        v-for="period in periods"
-        :key="period.id"
-        :to="{
-          name: 'top-genres',
-          params: {
-            chart_type: chartType,
-            time_limit: period.id,
-            is_track: isTrack,
-          },
-        }"
-        class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 mr-2 mb-2 inline-block"
+
+      <!-- Actions at the bottom -->
+      <div
+        class="flex flex-wrap gap-2 mt-auto pt-4 border-t-2 border-zinc-200 dark:border-zinc-800 transition-colors duration-300 group-hover:border-emerald-500/30"
       >
-        <span
-          class="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs md:text-sm font-semibold text-gray-700"
-          >{{ period.label }}</span
+        <router-link
+          v-for="period in periods"
+          :key="period.id"
+          :to="{
+            name: 'top-genres',
+            params: {
+              chart_type: chartType,
+              time_limit: period.id,
+              is_track: isTrack,
+            },
+          }"
+          class="flex-1 min-w-[30%]"
         >
-      </router-link>
+          <span
+            class="flex items-center justify-center w-full px-3 py-2 bg-zinc-200 dark:bg-zinc-800 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 text-zinc-700 dark:text-zinc-300 rounded-lg text-xs font-bold tracking-wider uppercase cursor-pointer transition-colors duration-300"
+          >
+            {{ period.label }}
+          </span>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>

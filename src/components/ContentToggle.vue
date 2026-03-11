@@ -1,55 +1,22 @@
 <template>
-  <div class="w-auto h-autoflex justify-center">
+  <div class="w-auto h-auto flex justify-center">
     <input @change="toggle_check()" type="checkbox" id="darkmode-toggle" />
     <label for="darkmode-toggle">
-      <svg
-        version="1.1"
-        class="sun"
-        style="enable-background: new 0 0 496 496"
-        id="_x32_"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 512 512"
-        xml:space="preserve"
-        fill="#000000"
-      >
-        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-        <g id="SVGRepo_iconCarrier">
-          <g>
-            <rect x="432" y="24" class="st0" width="32" height="52"></rect>
-            <rect x="432" y="188" class="st0" width="32" height="300"></rect>
-            <rect x="384" y="100" class="st0" width="128" height="64"></rect>
-            <rect x="239.985" y="24" class="st0" width="32" height="276.641"></rect>
-            <rect x="239.985" y="412.641" class="st0" width="32" height="75.359"></rect>
-            <rect x="191.985" y="324.641" class="st0" width="128" height="64"></rect>
-            <rect x="48" y="308" class="st0" width="32" height="180"></rect>
-            <rect x="48" y="24" class="st0" width="32" height="172"></rect>
-            <rect y="220" class="st0" width="128" height="64"></rect>
-          </g>
-        </g>
+      <svg class="artist" viewBox="0 0 14 14">
+        <path
+          fill="#fff"
+          fill-rule="evenodd"
+          d="M5.135 5.832c1.77 0 2.766-.995 2.766-2.766S6.905.3 5.135.3s-2.766.996-2.766 2.766s.995 2.766 2.766 2.766m5.167.932a.75.75 0 0 0-.75.75v2.636a3 3 0 0 0-.283-.014c-1.14 0-1.782.641-1.782 1.782c0 1.14.641 1.782 1.782 1.782c1.14 0 1.782-.642 1.782-1.782q0-.054-.002-.107l.003-.06V8.365a1.86 1.86 0 0 1 1.242 1.654q.005.115.005.22a.75.75 0 0 0 1.5 0q0-.142-.007-.286c-.076-1.744-1.527-3.162-3.276-3.188zm-5.164.058a7.4 7.4 0 0 1 3.164.703V9.01a2.75 2.75 0 0 0-1.236.705c-.459.46-.7 1.036-.79 1.64H2.362c-.912 0-1.667-.49-1.993-1.168a1.6 1.6 0 0 1-.112-1.124c.107-.391.366-.736.757-.996a7.4 7.4 0 0 1 4.125-1.245Z"
+          clip-rule="evenodd"
+        />
       </svg>
-      <svg
-        class="moon"
-        style="enable-background: new 0 0 49.739 49.739"
-        version="1.1"
-        id="_x32_"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        viewBox="0 0 512 512"
-        xml:space="preserve"
-        fill="#000000"
-      >
-        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-        <g id="SVGRepo_iconCarrier">
-          <g>
-            <path
-              class="st0"
-              d="M135.288,43.144v85.309v248.423c-16.582-6.093-36.179-7.908-56.37-4.002 c-48.504,9.332-81.902,47.602-74.598,85.438c7.293,37.856,52.506,60.956,101,51.614c43.037-8.291,74.12-39.375,75.458-72.772h0.276 V189.293l281.875-30.914v177.509c-16.593-6.082-36.169-7.877-56.36-3.981c-48.515,9.32-81.891,47.592-74.62,85.437 c7.293,37.846,52.496,60.946,101.001,51.594c43.047-8.28,74.142-39.375,75.458-72.751h0.276v-308.7V0L135.288,43.144z M462.928,132.148l-281.875,30.913v-37.613L462.928,90.49V132.148z"
-            ></path>
-          </g>
-        </g>
+      <svg class="track" viewBox="0 0 14 14">
+        <path
+          fill="#fff"
+          fill-rule="evenodd"
+          d="M4.471.726C4.25-.246 2.863-.24 2.651.734c-.213.97-.938 1.713-1.89 1.879c-1.015.176-1.015 1.635 0 1.811c.952.166 1.677.909 1.89 1.88c.212.973 1.599.98 1.82.007c.223-.977.944-1.719 1.9-1.885c1.018-.177 1.018-1.638 0-1.815c-.956-.166-1.677-.908-1.9-1.885m-2.51 2.793a3.6 3.6 0 0 0 1.603-1.64a3.63 3.63 0 0 0 1.61 1.64a3.63 3.63 0 0 0-1.61 1.639a3.6 3.6 0 0 0-1.603-1.64m.401 3.78a.625.625 0 1 0-1.25 0v.487H.625a.625.625 0 1 0 0 1.25h.487v.488a.625.625 0 0 0 1.25 0v-.488h.488a.625.625 0 0 0 0-1.25h-.488zm2.22 2.457a2.122 2.122 0 1 0 2.119 1.993V7.763l6.049-1.68v1.83A2.122 2.122 0 1 0 14 9.723v-6.36a1.04 1.04 0 0 0-.402-.816a1.03 1.03 0 0 0-.899-.179l-.004.001l-3.851 1.085l-.718.205c-.055.805-.584 1.578-1.587 1.752c-.508.088-.938.48-1.088 1.09v3.44a2.1 2.1 0 0 0-.869-.185"
+          clip-rule="evenodd"
+        />
       </svg>
     </label>
   </div>
@@ -87,7 +54,7 @@ label {
   height: 40px;
   position: relative;
   display: block;
-  background: #002f02;
+  background: #006283;
   border-radius: 40px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -100,7 +67,7 @@ label:after {
   position: absolute;
   top: 2px;
   left: 2px;
-  background: #458e46;
+  background: #00b0eb;
   border-radius: 36px;
   transition: all 0.3s;
 }
@@ -112,13 +79,13 @@ input {
 }
 
 input:checked + label {
-  background: #242424;
+  background: #9b334d;
 }
 
 input:checked + label:after {
   left: 98px;
   transform: translateX(-100%);
-  background: #777;
+  background: #ff547f;
 }
 
 label:active:after {
@@ -134,34 +101,30 @@ label:active:after {
   transition: 0.3s;
 }
 
-input:checked + label + .background {
-  background: #242424;
-}
-
 label svg {
   position: absolute;
-  width: 24px;
-  top: 8px;
+  width: 20px;
+  top: 10px;
   z-index: 100;
 }
 
-label svg.sun {
-  left: 8px;
+label svg.artist {
+  left: 10px;
   fill: #fff;
   transition: 0.3s;
 }
 
-label svg.moon {
-  left: 68px;
+label svg.track {
+  left: 71px;
   fill: #7e7e7e;
   transition: 0.3s;
 }
 
-input:checked + label svg.sun {
+input:checked + label svg.artist {
   fill: #7e7e7e;
 }
 
-input:checked + label svg.moon {
+input:checked + label svg.track {
   fill: #fff;
 }
 </style>
