@@ -114,7 +114,7 @@ onMounted(async () => {
 
   if (code) {
     // Returned from Spotify Auth, handle callback. Since url changes, use location.search
-    const urlParams = new URLParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search);
     const result = await handleCallback(urlParams);
 
     if (!result.ok) {
