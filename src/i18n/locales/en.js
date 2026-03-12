@@ -27,21 +27,21 @@ export default {
     title: "My Charts",
     toggleArtists: "Artists",
     toggleTracks: "Tracks",
-    pie: {
+    pie: {  
       name: "Musypie",
-      desc: "Your top {type} in a pie chart.",
+      desc: "Your top genres in a pie chart, based on your most listened {type}",
     },
     bubble: {
       name: "Musybubble",
-      desc: "Your most listened {type} in a bubble map.",
+      desc: "Your most listened-to {type} and a bubble map of their genres",
     },
     radar: {
       name: "Musyradar",
-      desc: "Your most listened {type} in a radar chart.",
+      desc: "A radar chart of your top genres based on your most listened {type}",
     },
     gauge: {
       name: "Musygauge",
-      desc: "Your most listened {type} in circular bars.",
+      desc: "Circular bars showing your top genres and the {type} that compose them",
     },
     period: {
       short: "1 month",

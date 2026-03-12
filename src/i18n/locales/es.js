@@ -28,21 +28,21 @@ export default {
     title: "Mis Charts",
     toggleArtists: "Artistas",
     toggleTracks: "Canciones",
-    pie: {
+    pie: {  
       name: "Musypie",
-      desc: "Tus {type} favoritos en un gráfico de pastel.",
+      desc: "Tus géneros favoritos en un gráfico circular, basados en tus {type} que mas reproduces",
     },
     bubble: {
       name: "Musybubble",
-      desc: "Tus {type} más escuchados en un mapa de burbujas.",
+      desc: "Tus {type} que mas reproduces y un mapa de burbujas de sus géneros",
     },
     radar: {
       name: "Musyradar",
-      desc: "Tus {type} más escuchados en un formato radar.",
+      desc: "Un gráfico radar de tus géneros favoritos basado en las {type} que mas escuchas",
     },
     gauge: {
       name: "Musygauge",
-      desc: "Tus {type} más escuchados en barras circulares.",
+      desc: "Barras circulares que muestran tus géneros favoritos y los {type} que los componen",
     },
     period: {
       short: "1 mes",
