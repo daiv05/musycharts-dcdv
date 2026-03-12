@@ -1,14 +1,11 @@
 import { fileURLToPath, URL } from "node:url";
-import { resolve } from "node:path";
 
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
 import { VitePWA } from "vite-plugin-pwa";
 import tailwindcss from "@tailwindcss/vite";
-import prerender from "vite-plugin-prerender";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
@@ -87,16 +84,6 @@ export default defineConfig({
             description: "Log in with Spotify.",
           },
         ],
-      },
-    }),
-    // Pre-render only the public landing page so crawlers get real HTML
-    prerender({
-      staticDir: resolve(__dirname, "dist"),
-      routes: ["/"],
-      renderer: "@prerenderer/renderer-puppeteer",
-      rendererOptions: {
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-        headless: true,
       },
     }),
   ],
