@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+>
+  <url>
+    <loc>https://musycharts.deras.dev/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://musycharts.deras.dev/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://musycharts.deras.dev/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://musycharts.deras.dev/" />
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2026-03-12</lastmod>
+  </url>
+</urlset>

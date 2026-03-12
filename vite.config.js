@@ -1,10 +1,12 @@
 import { fileURLToPath, URL } from "node:url";
+import { resolve } from "node:path";
 
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
 import { VitePWA } from "vite-plugin-pwa";
 import tailwindcss from "@tailwindcss/vite";
+import prerender from "vite-plugin-prerender";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,12 +16,13 @@ export default defineConfig({
     VitePWA({
       includeAssets: ["fonts/*.ttf", "images/*.png", "/favicon.ico"],
       manifest: {
-        name: "musycharts-dcdv",
-        short_name: "musycharts",
+        name: "Musycharts",
+        short_name: "Musycharts",
         start_url: "/",
+        scope: "/",
         display: "standalone",
-        description: "Descubre tu top de géneros y canciones mas escuchadas en Spotify.",
-        lang: "es",
+        description: "Discover your top genres and most listened songs on Spotify.",
+        lang: "en",
         dir: "auto",
         theme_color: "#000000",
         background_color: "#000000",
@@ -52,25 +55,25 @@ export default defineConfig({
         ],
         screenshots: [
           {
-            src: "https://musycharts-dcdv.vercel.app/screenshots/0.jpeg",
+            src: "https://musycharts.deras.dev/screenshots/0.jpeg",
             sizes: "1722x1507",
             type: "image/jpeg",
             description: "Top Grainy Gradient",
           },
           {
-            src: "https://musycharts-dcdv.vercel.app/screenshots/1.jpeg",
+            src: "https://musycharts.deras.dev/screenshots/1.jpeg",
             sizes: "1722x1473",
             type: "image/jpeg",
             description: "Top Radar",
           },
           {
-            src: "https://musycharts-dcdv.vercel.app/screenshots/2.jpeg",
+            src: "https://musycharts.deras.dev/screenshots/2.jpeg",
             sizes: "1722x1478",
             type: "image/jpeg",
             description: "Home",
           },
           {
-            src: "https://musycharts-dcdv.vercel.app/screenshots/3.jpeg",
+            src: "https://musycharts.deras.dev/screenshots/3.jpeg",
             sizes: "1722x913",
             type: "image/jpeg",
             description: "Inicio",
@@ -79,12 +82,17 @@ export default defineConfig({
         prefer_related_applications: false,
         shortcuts: [
           {
-            name: "Inicio",
+            name: "Home",
             url: "/",
-            description: "Inicia sesión con Spotify.",
+            description: "Log in with Spotify.",
           },
         ],
       },
+    }),
+    // Pre-render only the public landing page so crawlers get real HTML
+    prerender({
+      staticDir: resolve(__dirname, "dist"),
+      routes: ["/"],
     }),
   ],
   resolve: {
@@ -94,3 +102,5 @@ export default defineConfig({
   },
   publicDir: "public",
 });
+
+

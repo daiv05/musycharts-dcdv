@@ -28,6 +28,7 @@
     "oxlint": "^1.53.0",
     "tailwindcss": "^4.2.1",
     "vite": "^7.3.1",
+    "vite-plugin-prerender": "^1.0.8",
     "vite-plugin-pwa": "^1.2.0",
     "workbox-precaching": "^7.0.0"
   }

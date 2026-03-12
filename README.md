@@ -1,46 +1,123 @@
-# musycharts-dcdv
+# MusyCharts
 
-Una app para ver tus gustos musicales
+> Discover and visualize your music taste through your Spotify listening history.
 
-## Instalar y ejecutar localmente
+Live at 👉 [musycharts.deras.dev](https://musycharts.deras.dev/)
 
-Para correr este proyecto en tu equipo.
+---
 
-Instalar dependencias
+## Features
+
+- 🎵 **Top Tracks & Artists** — View your most-played songs and artists across different time ranges.
+- 🎸 **Top Genres** — Explore a breakdown of your favorite music genres.
+- 📊 **Interactive Charts** — Rich visualizations powered by amCharts 5 (radar, gauge, bubble, and more).
+- 🌐 **i18n Support** — Available in English and Spanish.
+- 🌙 **Dark / Light Mode** — Toggle between themes at any time.
+- 📱 **PWA Ready** — Installable as a Progressive Web App.
+- ⚡ **Prerendered Landing Page** — SEO-optimized using `vite-plugin-prerender`.
+
+---
+
+## Tech Stack
+
+| Layer      | Technology              |
+| ---------- | ----------------------- |
+| Framework  | Vue 3 (Composition API) |
+| Bundler    | Vite 7                  |
+| Routing    | Vue Router 5            |
+| i18n       | vue-i18n 11             |
+| Charts     | amCharts 5              |
+| Styling    | Tailwind CSS 4          |
+| HTTP       | Axios                   |
+| Linting    | OxLint + OxFmt          |
+| Deployment | Vercel                  |
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js ≥ 18
+- A [Spotify Developer](https://developer.spotify.com/dashboard) application with a valid **Client ID** and the redirect URI set to your local or production URL.
+
+### Environment Variables
+
+Copy the example file and fill in your values:
+
+```bash
+cp .env.example .env
+```
+
+| Variable                 | Description                                        |
+| ------------------------ | -------------------------------------------------- |
+| `VITE_SPOTIFY_CLIENT_ID` | Your Spotify application Client ID                 |
+| `VITE_APP_URL`           | Base URL of the app (e.g. `http://localhost:5173`) |
+
+### Install Dependencies
 
 ```bash
 npm install
 ```
 
-Ejecutar en local
+### Run Locally
 
 ```bash
 npm run dev
 ```
 
-Crear build para producción
+### Build for Production
 
 ```bash
-npm run dev
+npm run build
 ```
 
-### Vercel
+### Preview Production Build
 
-El proyecto esta desplegado en Vercel, puedes verlo en [musycharts-dcdv.vercel.app](https://musycharts-dcdv.vercel.app/).
-Como parte de la configuración se creo un archivo `vercel.json` para manejar correctamnete el router de la app.
+```bash
+npm run preview
+```
 
-## Autor
+---
 
-- [@daiv05](https://www.github.com/daiv05), David Deras
+## Linting & Formatting
+
+```bash
+# Lint
+npm run lint
+
+# Auto-fix lint issues
+npm run lint:fix
+
+# Format
+npm run fmt
+
+# Check formatting
+npm run fmt:check
+```
+
+---
+
+## Deployment
+
+The project is deployed on **Vercel**. A `vercel.json` file is included to correctly handle the SPA router (all routes are rewritten to `index.html`).
+
+A `404.html` fallback is also included for static hosting environments that do not support server-side rewrites.
+
+---
+
+## Author
+
+- [@daiv05](https://github.com/daiv05) — David Deras
 
 ## Feedback
 
-Si tienes alguna recomendación sobre que te gustaría que se agregara, puedes contactar al correo: davidderas50@gmail.com
+Have a feature request or suggestion? Reach out at **david@deras.dev**.
 
-## Licencia
+## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](./LICENSE.md)
 
-## Hecho en El Salvador
+---
 
-<img  src="https://musycharts-dcdv.vercel.app/assets/musylogo22-220e9f8e.png" width="300">
+<img src="https://musycharts.deras.dev/assets/musylogo22-220e9f8e.png" width="280" alt="MusyCharts logo">

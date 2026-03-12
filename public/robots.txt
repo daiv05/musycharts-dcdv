@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /stats
+Disallow: /top-genres/
+
+Sitemap: https://musycharts.deras.dev/sitemap.xml

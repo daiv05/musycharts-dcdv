@@ -17,19 +17,32 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomePage,
+      meta: {
+        title: "Musycharts - Your music taste like you've never seen it",
+      },
     },
     {
       path: "/stats",
       name: "stats",
       component: ChartsPage,
+      meta: { title: "My Charts | Musycharts" },
     },
     {
       path: "/top-genres/:chart_type/:time_limit/tracks=:is_track",
       name: "top-genres",
       component: TopGenresPage,
       props: true,
+      meta: { title: "Top Genres | Musycharts" },
     },
   ],
 });
 
+router.afterEach((to) => {
+  const title = to.meta?.title;
+  if (title) {
+    document.title = title;
+  }
+});
+
 export default router;
+

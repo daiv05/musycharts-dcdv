@@ -37,6 +37,7 @@ const setLanguage = (lang) => {
   if (locale.value !== lang) {
     locale.value = lang;
     localStorage.setItem("lang", lang);
+    document.documentElement.lang = lang;
   }
 };
 </script>
