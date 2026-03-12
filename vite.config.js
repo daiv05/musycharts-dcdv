@@ -93,6 +93,11 @@ export default defineConfig({
     prerender({
       staticDir: resolve(__dirname, "dist"),
       routes: ["/"],
+      renderer: "@prerenderer/renderer-puppeteer",
+      rendererOptions: {
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        headless: true,
+      },
     }),
   ],
   resolve: {
@@ -102,5 +107,3 @@ export default defineConfig({
   },
   publicDir: "public",
 });
-
-
